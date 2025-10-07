@@ -17,6 +17,282 @@
             }
         }
     </script>
+    <script>
+        // !!! DEBE REEMPLAZAR ESTA URL CON LA QUE OBTENGA DEL DESPLIEGUE DE GOOGLE APPS SCRIPT !!!
+        const SCRIPT_URL = 'URL_DE_TU_APPS_SCRIPT_AQUI'; 
+        
+        // Credenciales de Admin (DEBEN COINCIDIR CON EL APPS SCRIPT)
+        const ADMIN_USERNAME = 'HRBP';
+        const ADMIN_PASSWORD = 'Admin.123';
+        
+        const loginSection = document.getElementById('login-section');
+        const configSection = document.getElementById('config-section');
+        const loginBtn = document.getElementById('login-btn');
+        const addHabilidadBtn = document.getElementById('add-habilidad-btn');
+        const saveConfigBtn = document.getElementById('save-config-btn');
+        const habilidadesContainer = document.getElementById('habilidades-container');
+        const statusMsg = document.getElementById('status-msg');
+        const loginMsg = document.getElementById('login-msg');
+
+        let habilidadCounter = 0;
+        let skillCatalog = []; // Catálogo de habilidades cargado desde Sheets
+        
+        // --- FUNCIÓN DE CARGA INICIAL ---
+        
+        /** Carga el catálogo de habilidades al iniciar sesión */
+        async function loadSkillCatalog() {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getCatalog');
+                const text = await response.text();
+                const data = JSON.parse(text);
+
+                if (data.status === 'success' && data.catalog.length > 0) {
+                    skillCatalog = data.catalog;
+                    updateStatus('Catálogo de habilidades cargado. Puedes empezar a configurar.', 'success');
+                } else {
+                    updateStatus('⚠️ Error: Catálogo de habilidades vacío o no encontrado en Sheets.', 'error');
+                }
+            } catch (error) {
+                console.error('Error de red al cargar el catálogo:', error);
+                updateStatus('❌ Error al conectar con el servidor: No se pudo cargar el catálogo.', 'error');
+            }
+        }
+
+
+        // --- LÓGICA DE LOGIN ---
+        loginBtn.addEventListener('click', () => {
+            const user = document.getElementById('admin-user').value.trim();
+            const pass = document.getElementById('admin-pass').value.trim();
+            
+            if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
+                loginSection.classList.add('hidden');
+                configSection.classList.remove('hidden');
+                loginMsg.classList.add('hidden');
+                loadSkillCatalog(); // Cargar el catálogo al iniciar sesión
+                
+                // Agregamos una fila inicial vacía
+                addHabilidadRow(); 
+            } else {
+                loginMsg.textContent = 'Usuario o Contraseña incorrectos.';
+                loginMsg.classList.remove('hidden');
+            }
+        });
+
+        // --- LÓGICA DE GESTIÓN DE HABILIDADES ---
+
+        /** Genera el HTML para las opciones del dropdown de habilidades */
+        function generateSkillOptions(selectedValue = '') {
+            let options = '<option value="">-- Seleccionar Habilidad --</option>';
+            skillCatalog.forEach(skill => {
+                const selected = skill.habilidad === selectedValue ? 'selected' : '';
+                options += `<option value="${skill.habilidad}" ${selected}>${skill.habilidad} (${skill.tipoTest})</option>`;
+            });
+            return options;
+        }
+        
+        /** Manejador de cambio del dropdown de habilidad */
+        function handleSkillChange(event) {
+            const selectedHabilidad = event.target.value;
+            const row = event.target.closest('.habilidad-row');
+            
+            const skillData = skillCatalog.find(s => s.habilidad === selectedHabilidad);
+            
+            // Lógica de autollenado
+            if (skillData) {
+                row.querySelector('input[name="habilidad-type"]').value = skillData.tipoTest;
+                row.querySelector('input[name="habilidad-question"]').value = skillData.preguntaEstandar;
+                row.querySelector('input[name="habilidad-complementarias"]').value = skillData.complementarias;
+                // Sugerir puntuación máxima según el tipo de test (SJT=5, DISC=-1/1, LOGICA=1)
+                let defaultScore = 5;
+                if (skillData.tipoTest === 'DISC' || skillData.tipoTest === 'LOGICA') {
+                    defaultScore = 1; 
+                }
+                row.querySelector('input[name="habilidad-max-score"]').value = defaultScore;
+                
+                // Mostrar sugerencias
+                row.querySelector('.complementary-info').textContent = 
+                    skillData.complementarias ? `Complementarias: ${skillData.complementarias}` : 'No hay habilidades complementarias sugeridas.';
+            } else {
+                 // Limpiar campos si no se selecciona nada
+                 row.querySelector('input[name="habilidad-type"]').value = '';
+                 row.querySelector('input[name="habilidad-question"]').value = '';
+                 row.querySelector('input[name="habilidad-complementarias"]').value = '';
+                 row.querySelector('.complementary-info').textContent = '';
+            }
+            
+            updateQuestionCounts();
+        }
+        
+        /** Agrega una nueva fila para definir una habilidad/pregunta */
+        function addHabilidadRow() {
+            habilidadCounter++;
+            const id = `H${habilidadCounter}`;
+            
+            const rowHtml = `
+                <div class="habilidad-row p-4 border border-gray-200 rounded-lg bg-white shadow-sm" data-id="${id}">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-lg text-brand-primary">Ítem #${habilidadCounter} (${id})</h4>
+                        <p class="text-sm font-semibold text-red-500 type-count-display">--</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-medium text-gray-500">Soft Skill a Evaluar</label>
+                            <select name="habilidad-name" class="w-full p-2 border rounded-lg text-sm bg-white" required>
+                                ${generateSkillOptions()}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500">Batería (Tipo Test)</label>
+                            <input type="text" name="habilidad-type" class="w-full p-2 border rounded-lg text-sm bg-gray-100" readonly placeholder="Se autocompleta">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500">Score Máximo Ideal</label>
+                            <input type="number" name="habilidad-max-score" value="5" class="w-full p-2 border rounded-lg text-sm" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                         <label class="block text-xs font-medium text-gray-500">Pregunta/Ítem (Autollenado del Catálogo)</label>
+                         <input type="text" name="habilidad-question" class="w-full p-2 border rounded-lg text-sm" placeholder="Escenario de Bug no previsto" required>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3 pt-3 border-t">
+                        <div class="text-xs text-gray-500 italic complementary-info"></div>
+                        <input type="hidden" name="habilidad-complementarias">
+                        
+                        <button type="button" class="remove-habilidad-btn bg-red-100 text-red-700 py-1 px-3 rounded-lg text-xs font-semibold hover:bg-red-200 transition">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            `;
+            habilidadesContainer.insertAdjacentHTML('beforeend', rowHtml);
+            
+            // Añadir listeners
+            const newRow = habilidadesContainer.lastElementChild;
+            newRow.querySelector('select[name="habilidad-name"]').addEventListener('change', handleSkillChange);
+            newRow.querySelector('.remove-habilidad-btn').onclick = (e) => { 
+                e.target.closest('.habilidad-row').remove(); 
+                updateQuestionCounts();
+            };
+        }
+        
+        addHabilidadBtn.addEventListener('click', addHabilidadRow);
+        
+        /** Muestra un contador de cuántas preguntas hay por tipo de test */
+        function updateQuestionCounts() {
+            const rows = document.querySelectorAll('.habilidad-row');
+            const counts = {};
+            
+            rows.forEach(row => {
+                const typeInput = row.querySelector('input[name="habilidad-type"]');
+                const countDisplay = row.querySelector('.type-count-display');
+                const type = typeInput.value.trim();
+
+                if (type) {
+                    counts[type] = (counts[type] || 0) + 1;
+                }
+            });
+
+            rows.forEach(row => {
+                 const typeInput = row.querySelector('input[name="habilidad-type"]');
+                 const countDisplay = row.querySelector('.type-count-display');
+                 const type = typeInput.value.trim();
+                 
+                 if (type) {
+                     const currentCount = counts[type];
+                     countDisplay.textContent = `Batería: ${type} (${currentCount}/2)`;
+                     
+                     if (currentCount > 2) {
+                         countDisplay.classList.add('text-red-700', 'font-bold');
+                         countDisplay.classList.remove('text-red-500');
+                     } else {
+                         countDisplay.classList.remove('text-red-700', 'font-bold');
+                         countDisplay.classList.add('text-red-500');
+                     }
+                 }
+            });
+        }
+
+
+        // --- LÓGICA DE GUARDAR CONFIGURACIÓN ---
+        saveConfigBtn.addEventListener('click', async () => {
+            const rows = document.querySelectorAll('.habilidad-row');
+            if (rows.length === 0) {
+                updateStatus('Agrega al menos una habilidad.', 'warning');
+                return;
+            }
+            
+            // 1. Recolectar datos
+            const configData = [];
+            let allFieldsValid = true;
+            
+            rows.forEach(row => {
+                const id = row.getAttribute('data-id');
+                const name = row.querySelector('select[name="habilidad-name"]').value.trim();
+                const type = row.querySelector('input[name="habilidad-type"]').value.trim();
+                const question = row.querySelector('input[name="habilidad-question"]').value.trim();
+                const maxScore = row.querySelector('input[name="habilidad-max-score"]').value;
+                const complementarias = row.querySelector('input[name="habilidad-complementarias"]').value.trim();
+
+                if (!name || !type || !question || !maxScore) {
+                     allFieldsValid = false;
+                     return;
+                }
+                
+                // La estructura de la fila que Apps Script espera
+                // [ID_Habilidad, Habilidad, Tipo_Test, Pregunta, Puntuacion_Maxima, Habilidades_Complementarias]
+                configData.push([id, name, type, question, parseFloat(maxScore), complementarias]);
+            });
+
+            if (!allFieldsValid) {
+                 updateStatus('Completa o selecciona una habilidad para todos los ítems antes de guardar.', 'warning');
+                 return;
+            }
+
+            // 2. Preparar Payload y enviar
+            const payload = {
+                action: 'saveConfig',
+                username: ADMIN_USERNAME,
+                password: ADMIN_PASSWORD,
+                config: configData
+            };
+            
+            updateStatus('Guardando configuración y validando reglas...', 'loading');
+            
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=saveConfig', {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    // No podemos leer el JSON de error con no-cors, así que asumimos el éxito.
+                    // Si hay un error de validación (máx. 2), el Apps Script NO guardará, pero el frontend no sabrá el motivo exacto.
+                    // Para mayor robustez, un servidor Proxy o un método diferente de Apps Script sería ideal, pero nos quedamos con la solución simple.
+                });
+                
+                // Para manejar el error de validación sin CORS, debemos hacer una llamada GET de confirmación, pero es costoso. 
+                // Por simplicidad en este entorno, actualizaremos el status. Si falla la validación (max 2), NO se guarda.
+                
+                // Muestra un mensaje de éxito/advertencia genérico
+                updateStatus('✅ Intento de guardar enviado. Por favor, actualiza la página y verifica si la configuración persiste (regla de max 2 validada en backend).', 'success');
+
+            } catch (error) {
+                console.error('Error al guardar la configuración:', error);
+                updateStatus('❌ Error al conectar con el servidor: Revisa la URL del Apps Script.', 'error');
+            }
+        });
+
+        // Función para mostrar el estado
+        function updateStatus(message, type) {
+            statusMsg.textContent = message;
+            statusMsg.classList.remove('hidden', 'text-green-600', 'text-red-500', 'text-yellow-600');
+            
+            if (type === 'success') statusMsg.classList.add('text-green-600');
+            else if (type === 'error') statusMsg.classList.add('text-red-500');
+            else if (type === 'warning') statusMsg.classList.add('text-yellow-600');
+            else if (type === 'loading') statusMsg.textContent = message + ' (Espera...)';
+        }
+        
+    </script>
     <style>
         /* Estilos base */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -235,3 +511,4 @@
 </body>
 
 </html>
+
