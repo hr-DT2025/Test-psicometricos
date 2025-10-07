@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Competencias Tech - Ilyra Rivas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-primary': '#0F3460', // Navy Blue
+                        'brand-secondary': '#A9B2C3', // Silver/Gray
+                        'brand-accent': '#3B82F6', // Accent Blue
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .forced-choice-group input[type="radio"]:checked + label {
+            border-color: #3B82F6;
+            background-color: #EBF5FF; 
+            font-weight: 600;
+        }
+        .nav-btn { transition: all 0.3s ease; }
+        .nav-btn:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transform: translateY(-1px);
+        }
+        .test-section { display: none; }
+        #results-container { min-height: 400px; }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4 md:p-8">
+
+    <main class="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-6 md:p-10 border-t-4 border-brand-accent">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-brand-primary mb-2">Evaluación de Competencias Tech</h1>
+            <p class="text-brand-secondary text-lg">Por Ilyra Rivas - HRBP Tech</p>
+            <div class="h-1 w-20 bg-brand-accent mx-auto mt-4 rounded-full"></div>
+        </header>
+
+        <form id="psychometric-test-form">
+            
+            <section id="section-1" class="test-section active">
+                <h2 class="text-xl font-semibold mb-6 text-brand-primary border-b pb-2">1/5. Datos de Contacto</h2>
+                <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-brand-accent">
+                    Necesitamos tu nombre y correo electrónico para poder enviarte un *feedback* detallado de tu perfil de competencias.
+                </p>
+                <div class="mb-6">
+                    <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
+                    <input type="text" id="user-name" name="user-name" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-brand-accent focus:border-brand-accent" placeholder="Tu nombre completo">
+                </div>
+                <div class="mb-6">
+                    <label for="user-email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                    <input type="email" id="user-email" name="user-email" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-brand-accent focus:border-brand-accent" placeholder="ejemplo@correo.com">
+                </div>
+            </section>
+
+            
+            <section id="section-2" class="test-section">
+                <h2 class="text-xl font-semibold mb-6 text-brand-primary border-b pb-2">2/5. Estilo de Comportamiento (Personalidad y Enfoque)</h2>
+                <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-brand-accent">
+                    Instrucciones: En cada grupo de cuatro frases, selecciona dos opciones: la que **MEJOR** te describe y la que **MENOS** te describe.
+                </p>
+                <div class="mb-8 p-4 border rounded-lg shadow-sm forced-choice-group">
+                    <p class="font-medium mb-4 text-gray-700">1. Al enfrentar un nuevo proyecto:</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <input type="radio" id="b1-mejor-d" name="b1-mejor" value="D" class="hidden">
+                            <label for="b1-mejor-d" class="block p-3 border rounded-lg cursor-pointer text-sm">Mejor: Lograr el objetivo es mi prioridad.</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="b1-menos-d" name="b1-menos" value="D" class="hidden">
+                            <label for="b1-menos-d" class="block p-3 border rounded-lg cursor-pointer text-sm">Menos: Lograr el objetivo es mi prioridad.</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="b1-mejor-c" name="b1-mejor" value="C" class="hidden">
+                            <label for="b1-mejor-c" class="block p-3 border rounded-lg cursor-pointer text-sm">Mejor: La precisión y la calidad son claves para el éxito.</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="b1-menos-c" name="b1-menos" value="C" class="hidden">
+                            <label for="b1-menos-c" class="block p-3 border rounded-lg cursor-pointer text-sm">Menos: La precisión y la calidad son claves para el éxito.</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8 p-4 border rounded-lg shadow-sm forced-choice-group">
+                    <p class="font-medium mb-4 text-gray-700">2. Cuando mi trabajo es criticado:</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <input type="radio" id="b2-mejor-d" name="b2-mejor" value="D" class="hidden">
+                            <label for="b2-mejor-d" class="block p-3 border rounded-lg cursor-pointer text-sm">Mejor: Me enfoco en resolver el problema y seguir avanzando.</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="b2-menos-d" name="b2-menos" value="D" class="hidden">
+                            <label for="b2-menos-d" class="block p-3 border rounded-lg cursor-pointer text-sm">Menos: Me enfoco en resolver el problema y seguir avanzando.</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="b2-mejor-c" name="b2-mejor" value="C" class="hidden">
+                            <label for="b2-mejor-c" class="block p-3 border rounded-lg cursor-pointer text-sm">Mejor: Analizo la crítica como una oportunidad de mejorar mi metodología.</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="b2-menos-c" name="b2-menos" value="C" class="hidden">
+                            <label for="b2-menos-c" class="block p-3 border rounded-lg cursor-pointer text-sm">Menos: Analizo la crítica como una oportunidad de mejorar mi metodología.</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="section-3" class="test-section">
+                <h2 class="text-xl font-semibold mb-6 text-brand-primary border-b pb-2">3/5. Razonamiento Situacional (Determinación y Mejora Continua)</h2>
+                <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-brand-accent">
+                    Instrucciones: Evalúa qué tan probable es que realices cada acción en las situaciones presentadas (1: Muy improbable, 5: Muy probable).
+                </p>
+                <div class="mb-8 p-4 border rounded-lg shadow-sm">
+                    <p class="font-medium mb-4 text-gray-700">1. Has entregado un código funcional, pero un revisor te indica que no sigue el nuevo estándar de nomenclatura de la empresa. La fecha límite de entrega ya pasó.</p>
+                    <p class="text-sm italic text-gray-500 mb-3">Acción: Corregiría el código de inmediato, y programaría un recordatorio para revisar y modificar la guía de estilo si es necesario.</p>
+                    <div class="flex justify-between items-center space-x-2 text-sm">
+                        <span>1 (Improbable)</span>
+                        <div class="flex space-x-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt1" value="1" required class="form-radio h-4 w-4 text-brand-accent"> 1
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt1" value="2" class="form-radio h-4 w-4 text-brand-accent"> 2
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt1" value="3" class="form-radio h-4 w-4 text-brand-accent"> 3
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt1" value="4" class="form-radio h-4 w-4 text-brand-accent"> 4
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt1" value="5" class="form-radio h-4 w-4 text-brand-accent"> 5
+                            </label>
+                        </div>
+                        <span>5 (Muy Probable)</span>
+                    </div>
+                </div>
+                <div class="mb-8 p-4 border rounded-lg shadow-sm">
+                    <p class="font-medium mb-4 text-gray-700">2. Estás a pocas horas de la entrega de un módulo crítico y descubres un *bug* complejo que no habías previsto. El equipo ya está agotado.</p>
+                    <p class="text-sm italic text-gray-500 mb-3">Acción: Notificaría inmediatamente el riesgo, propondría un plan de acción para trabajar horas extras si es necesario y tomaría el liderazgo para coordinar la solución.</p>
+                    <div class="flex justify-between items-center space-x-2 text-sm">
+                        <span>1 (Improbable)</span>
+                        <div class="flex space-x-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt2" value="1" required class="form-radio h-4 w-4 text-brand-accent"> 1
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt2" value="2" class="form-radio h-4 w-4 text-brand-accent"> 2
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt2" value="3" class="form-radio h-4 w-4 text-brand-accent"> 3
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt2" value="4" class="form-radio h-4 w-4 text-brand-accent"> 4
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sjt2" value="5" class="form-radio h-4 w-4 text-brand-accent"> 5
+                            </label>
+                        </div>
+                        <span>5 (Muy Probable)</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-4" class="test-section">
+                <h2 class="text-xl font-semibold mb-6 text-brand-primary border-b pb-2">4/5. Capacidad Lógica (Análisis y Aptitud)</h2>
+                <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-brand-accent">
+                    Instrucciones: Selecciona la opción correcta.
+                </p>
+                <div class="mb-8 p-4 border rounded-lg shadow-sm">
+                    <p class="font-medium mb-4 text-gray-700">1. ¿Qué número sigue en la secuencia: 3, 9, 27, 81, ?</p>
+                    <div class="flex flex-col space-y-2 text-sm">
+                        <label class="flex items-center">
+                            <input type="radio" name="logic1" value="a" required class="form-radio h-4 w-4 text-brand-accent">
+                            <span class="ml-3">162</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="logic1" value="b" class="form-radio h-4 w-4 text-brand-accent">
+                            <span class="ml-3">243</span> 
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="logic1" value="c" class="form-radio h-4 w-4 text-brand-accent">
+                            <span class="ml-3">180</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-8 p-4 border rounded-lg shadow-sm">
+                    <p class="font-medium mb-4 text-gray-700">2. Si "Código" es a "Sistema" como "Ladrillo" es a:</p>
+                    <div class="flex flex-col space-y-2 text-sm">
+                        <label class="flex items-center">
+                            <input type="radio" name="logic2" value="a" class="form-radio h-4 w-4 text-brand-accent">
+                            <span class="ml-3">Cemento</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="logic2" value="b" class="form-radio h-4 w-4 text-brand-accent">
+                            <span class="ml-3">Ingeniero</span>
+                        </label>
+                        <label type="radio" class="flex items-center">
+                            <input type="radio" name="logic2" value="c" required class="form-radio h-4 w-4 text-brand-accent">
+                            <span class="ml-3">Edificio</span> 
+                        </label>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="section-5" class="test-section">
+                <h2 class="text-xl font-semibold mb-6 text-brand-primary border-b pb-2">5/5. Evaluación de Habilidades (Dinámica)</h2>
+                <p class="text-sm text-gray-600 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-700">
+                    Instrucciones: Evalúa cada escenario o pregunta de acuerdo a tu nivel de identificación o respuesta.
+                </p>
+                <div id="dynamic-questions-container">
+                    <div id="loading-dynamic" class="flex items-center justify-center p-8 text-gray-500">
+                        Cargando configuración de habilidades...
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="section-6" class="test-section text-center">
+                <div id="loading-indicator" class="hidden">
+                    <div class="flex items-center justify-center p-8">
+                        <svg class="animate-spin h-8 w-8 text-brand-primary mr-3" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span class="text-lg text-brand-primary font-medium">Calculando y guardando resultados...</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Esto puede tomar unos segundos.</p>
+                </div>
+
+                <div id="results-container" class="mt-4 p-6 bg-brand-primary text-white rounded-lg hidden">
+                    <h2 class="text-2xl font-bold mb-4">¡Gracias por completar la Evaluación!</h2>
+                    <p class="mb-6">Hemos analizado y guardado tu perfil. Aquí tienes un resumen preliminar de tus tendencias:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                        <div class="bg-white p-4 rounded-lg text-brand-primary shadow-md">
+                            <h3 class="font-bold text-xl mb-1">Tu Perfil Dominante</h3>
+                            <p id="result-dominant-profile" class="text-2xl font-extrabold text-brand-accent"></p>
+                            <p class="text-sm mt-2">Tendencia de comportamiento que más influyó en tus decisiones.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-brand-primary shadow-md">
+                            <h3 class="font-bold text-xl mb-1">Puntaje Habilidades</h3>
+                            <p id="result-dynamic-score" class="text-2xl font-extrabold text-brand-accent"></p>
+                            <p class="text-sm mt-2">Puntuación total en habilidades dinámicas.</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm mt-6 text-gray-300">Pronto recibirás un *feedback* más detallado. ¡Gracias por participar!</p>
+                </div>
+                
+                <div id="error-message" class="mt-4 p-4 bg-red-100 text-red-700 border-l-4 border-red-500 rounded-lg hidden text-left">
+                    Hubo un error al intentar guardar los datos. Por favor, revisa la configuración del Apps Script.
+                </div>
+            </section>
+
+            <div id="navigation-controls" class="flex justify-between mt-8 pt-6 border-t">
+                <button type="button" id="prev-btn" class="nav-btn bg-gray-200 text-gray-700 py-2 px-6 rounded-lg font-semibold hover:bg-gray-300 hidden">
+                    Anterior
+                </button>
+                <button type="button" id="next-btn" class="nav-btn bg-brand-primary text-white py-2 px-6 rounded-lg font-semibold hover:bg-brand-accent ml-auto">
+                    Siguiente
+                </button>
+                <button type="button" id="submit-btn" class="nav-btn bg-green-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 hidden ml-auto">
+                    Finalizar Test
+                </button>
+            </div>
+            
+        </form>
+    </main>
+
+    <script>
+        // === CONFIGURACIÓN ===
+        // !!! REEMPLAZA ESTA URL !!!
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz9LnH4XbgyT_HtfNWfDerrnL3It4UlH-WPf4vBQYuNNez4WTlRajUsXb6QFajvejCW/exec'; 
+        const generateUniqueId = () => 'user_' + Math.random().toString(36).substring(2, 9) + Date.now();
+        
+        let currentSection = 1;
+        const totalStaticSections = 4; // Secciones estáticas (1 a 4)
+        const totalSections = 5; // Total de secciones de contenido (1 a 5)
+        const sections = document.querySelectorAll('.test-section');
+        
+        // Variables globales
+        let dynamicConfig = []; // Aquí se guarda la configuración cargada del Admin
+        let totalDynamicScore = 0; // Para la puntuación dinámica
+
+        const form = document.getElementById('psychometric-test-form');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const resultsContainer = document.getElementById('results-container');
+        const errorMessage = document.getElementById('error-message');
+        const dynamicQuestionsContainer = document.getElementById('dynamic-questions-container');
+        
+        const userId = generateUniqueId(); 
+
+        // === FUNCIONES DE CARGA Y RENDERIZADO DINÁMICO ===
+
+        /** Carga la configuración de preguntas desde el Apps Script */
+        async function loadDynamicConfig() {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getConfig');
+                const text = await response.text();
+                const data = JSON.parse(text);
+
+                if (data.status === 'success' && data.config.length > 0) {
+                    dynamicConfig = data.config;
+                    renderDynamicQuestions();
+                } else {
+                    dynamicQuestionsContainer.innerHTML = '<p class="p-4 bg-red-100 text-red-700 rounded-lg">No hay preguntas dinámicas configuradas. Contacta al administrador.</p>';
+                    console.error('Error al cargar configuración:', data.message);
+                }
+            } catch (error) {
+                console.error('Error de red al cargar configuración:', error);
+                dynamicQuestionsContainer.innerHTML = '<p class="p-4 bg-red-100 text-red-700 rounded-lg">Error de conexión con el servidor.</p>';
+            }
+        }
+
+        /** Renderiza las preguntas basadas en la configuración cargada */
+        function renderDynamicQuestions() {
+            dynamicQuestionsContainer.innerHTML = ''; // Limpiar el indicador de carga
+            
+            dynamicConfig.forEach((item, index) => {
+                const qNum = index + 1;
+                const html = `
+                    <div class="mb-8 p-4 border rounded-lg shadow-sm" data-habilidad-id="${item.id}" data-max-score="${item.maxScore}">
+                        <p class="font-medium mb-4 text-gray-700">${qNum}. [${item.habilidad} - ${item.tipo_test || 'Genérico'}] ${item.pregunta}</p>
+                        <p class="text-sm italic text-gray-500 mb-3">Evalúa qué tan de acuerdo estás con el principio de esta habilidad (1: Nada, ${item.maxScore}: Totalmente).</p>
+                        <div class="flex justify-between items-center space-x-2 text-sm">
+                            <span>1 (Nada)</span>
+                            <div class="flex space-x-3">
+                                ${Array.from({ length: item.maxScore }, (_, i) => i + 1).map(val => `
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="dynamic-q-${item.id}" value="${val}" required class="form-radio h-4 w-4 text-brand-accent"> ${val}
+                                    </label>
+                                `).join('')}
+                            </div>
+                            <span>${item.maxScore} (Totalmente)</span>
+                        </div>
+                    </div>
+                `;
+                dynamicQuestionsContainer.insertAdjacentHTML('beforeend', html);
+            });
+        }
+        
+        // Llamar a la carga al inicio para tener la config lista antes de llegar a la sección 5
+        loadDynamicConfig();
+
+
+        // === FUNCIONES DE NAVEGACIÓN Y VALIDACIÓN (ADAPTADAS) ===
+
+        function showSection(sectionIndex) {
+            sections.forEach(section => section.style.display = 'none');
+            const targetSection = document.getElementById(`section-${sectionIndex}`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            const isFinalSection = sectionIndex === totalSections; // Sección 5: Preguntas Dinámicas
+            const isResultsScreen = sectionIndex > totalSections; // Sección 6: Resultados
+
+            // Lógica de botones
+            prevBtn.classList.toggle('hidden', sectionIndex === 1 || isResultsScreen);
+            nextBtn.classList.toggle('hidden', isFinalSection || isResultsScreen);
+            submitBtn.classList.toggle('hidden', !isFinalSection || isResultsScreen);
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /** Valida que todas las preguntas de la sección actual estén respondidas. */
+        function validateSection(sectionIndex) {
+            const section = document.getElementById(`section-${sectionIndex}`);
+            
+            // Validación específica para la Sección 1 (Datos de Contacto)
+            if (sectionIndex === 1) {
+                const nameInput = document.getElementById('user-name');
+                const emailInput = document.getElementById('user-email');
+                return nameInput.value.trim() && emailInput.value.trim();
+            }
+
+            // Validación específica para la Sección 2 (DISC)
+            if (sectionIndex === 2) {
+                const mejorGroups = ['b1-mejor', 'b2-mejor'];
+                const menosGroups = ['b1-menos', 'b2-menos'];
+                for (const group of [...mejorGroups, ...menosGroups]) {
+                    if (!document.querySelector(`input[name="${group}"]:checked`)) return false;
+                }
+                return true;
+            }
+
+            // Validación general para Secciones 3, 4 y 5
+            const requiredInputs = section.querySelectorAll('input[type="radio"][required]');
+            const uniqueNames = new Set();
+            requiredInputs.forEach(input => uniqueNames.add(input.name));
+
+            for (const name of uniqueNames) {
+                if (!document.querySelector(`input[name="${name}"]:checked`)) return false;
+            }
+            return true;
+        }
+
+        /** Manejador del botón "Siguiente" */
+        nextBtn.addEventListener('click', () => {
+            if (validateSection(currentSection)) {
+                currentSection++;
+                showSection(currentSection);
+            } else {
+                displayMessage('Por favor, responde todas las preguntas antes de avanzar.', 'warning');
+            }
+        });
+
+        /** Manejador del botón "Anterior" */
+        prevBtn.addEventListener('click', () => {
+            if (currentSection > 1) {
+                currentSection--;
+                showSection(currentSection);
+            }
+        });
+        
+        // === LÓGICA DE PUNTUACIÓN Y ENVÍO (ADAPTADA) ===
+        
+        function displayMessage(message, type = 'info') {
+            // (Función displayMessage sin cambios)
+            const messageBox = document.createElement('div');
+            let bgColor = 'bg-blue-100 border-blue-500 text-blue-700';
+            if (type === 'warning') {
+                 bgColor = 'bg-yellow-100 border-yellow-500 text-yellow-700';
+            }
+            messageBox.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg border-l-4 ${bgColor} transition-opacity duration-300`;
+            messageBox.textContent = message;
+            document.body.appendChild(messageBox);
+            
+            setTimeout(() => {
+                messageBox.classList.add('opacity-0');
+                messageBox.addEventListener('transitionend', () => messageBox.remove());
+            }, 3000);
+        }
+
+        /** Calcula todos los puntajes del test. */
+        function calculateScores() {
+            let scoreD = 0; 
+            let scoreC = 0; 
+            let scoreSJT = 0; 
+            let scoreLogic = 0; 
+            let scoreDynamic = 0; 
+
+            // Datos del Usuario
+            const userName = document.getElementById('user-name').value.trim();
+            const userEmail = document.getElementById('user-email').value.trim();
+
+
+            // II. SECCIÓN DISC SIMPLIFICADO (D vs C)
+            const betterChoices = form.querySelectorAll('#section-2 input[name$="-mejor"]:checked');
+            const lesserChoices = form.querySelectorAll('#section-2 input[name$="-menos"]:checked');
+
+            betterChoices.forEach(input => { if (input.value === 'D') scoreD++; else if (input.value === 'C') scoreC++; });
+            lesserChoices.forEach(input => { if (input.value === 'D') scoreD--; else if (input.value === 'C') scoreC--; });
+
+            // III. SECCIÓN JUICIO SITUACIONAL (SJT)
+            const sjt1Value = parseInt(form.querySelector('input[name="sjt1"]:checked')?.value || 0); // Max 5
+            const sjt2Value = parseInt(form.querySelector('input[name="sjt2"]:checked')?.value || 0); // Max 5
+            scoreSJT = sjt1Value + sjt2Value; 
+
+            // IV. SECCIÓN CAPACIDAD LÓGICA (Respuestas correctas: logic1 = b, logic2 = c)
+            if (form.querySelector('input[name="logic1"]:checked')?.value === 'b') scoreLogic++;
+            if (form.querySelector('input[name="logic2"]:checked')?.value === 'c') scoreLogic++;
+
+            // V. SECCIÓN DINÁMICA (Suma de los valores elegidos)
+            dynamicConfig.forEach(item => {
+                const input = form.querySelector(`input[name="dynamic-q-${item.id}"]:checked`);
+                if (input) {
+                    scoreDynamic += parseInt(input.value);
+                }
+            });
+            totalDynamicScore = scoreDynamic; // Guardamos para mostrar en resultados
+
+            // Determinar Perfil Dominante
+            let dominantProfile = 'Indefinido';
+            if (scoreD > scoreC) {
+                dominantProfile = 'Resultados/Determinación';
+            } else if (scoreC > scoreD) {
+                dominantProfile = 'Detalle/Excelencia';
+            } else {
+                dominantProfile = 'Balance D/C';
+            }
+            
+            return { userName, userEmail, scoreD, scoreC, scoreSJT, scoreLogic, dominantProfile, scoreDynamic };
+        }
+
+        /** Envía los datos al Google Apps Script (el "backend"). */
+        async function sendResults(results) {
+            loadingIndicator.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+            
+            // Payload para el Apps Script
+            const payload = {
+                action: 'saveResults', // Nueva acción
+                userId: userId,
+                userName: results.userName,
+                userEmail: results.userEmail,
+                scoreD: results.scoreD,
+                scoreC: results.scoreC,
+                scoreSJT: results.scoreSJT,
+                scoreLogic: results.scoreLogic,
+                dominantProfile: results.dominantProfile,
+                scoreDynamic: results.scoreDynamic // Agregamos el score dinámico
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=saveResults', { // Pasamos la acción en la URL
+                    method: 'POST',
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                displayFinalResults(results);
+
+            } catch (error) {
+                console.error('Error al enviar los datos:', error);
+                loadingIndicator.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        /** Muestra el resumen de resultados al usuario. */
+        function displayFinalResults(results) {
+            loadingIndicator.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+
+            // Calcular el Score Máximo Posible para la sección dinámica
+            const maxDynamicScore = dynamicConfig.reduce((sum, item) => sum + parseFloat(item.maxScore), 0);
+
+            // Actualizar resumen de resultados
+            document.getElementById('result-dominant-profile').textContent = results.dominantProfile;
+            document.getElementById('result-dynamic-score').textContent = `${results.scoreDynamic} / ${maxDynamicScore}`;
+            
+            // Advertencia si la URL no fue reemplazada
+            if (SCRIPT_URL === 'URL_DE_TU_APPS_SCRIPT_AQUI') {
+                 errorMessage.textContent = '⚠️ Advertencia: La URL del Apps Script no fue reemplazada. Los datos NO se guardaron en la hoja de cálculo.';
+                 errorMessage.classList.remove('hidden');
+            }
+        }
+        
+        /** Manejador del botón "Finalizar Test" */
+        submitBtn.addEventListener('click', () => {
+            if (validateSection(currentSection)) {
+                // 1. Ocultar navegación y pasar a la pantalla final
+                document.getElementById('navigation-controls').classList.add('hidden');
+                currentSection++;
+                showSection(currentSection);
+
+                // 2. Calcular scores
+                const scores = calculateScores();
+                
+                // 3. Enviar a Google Sheets
+                sendResults(scores);
+                
+            } else {
+                displayMessage('Por favor, responde todas las preguntas antes de finalizar.', 'warning');
+            }
+        });
+
+        // Inicialización
+        showSection(currentSection);
+    </script>
+</body>
+</html>
