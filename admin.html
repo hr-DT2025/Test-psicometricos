@@ -17,6 +17,66 @@
             }
         }
     </script>
+    <style>
+        /* Estilos base */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-start justify-center p-4">
+
+    <main class="w-full max-w-3xl bg-white rounded-xl shadow-2xl p-6 md:p-10 mt-8 border-t-4 border-red-500">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-red-700 mb-2">Panel de Administración de Pruebas</h1>
+            <p class="text-gray-500 text-lg">Define las habilidades a evaluar</p>
+            <div class="h-1 w-20 bg-red-500 mx-auto mt-4 rounded-full"></div>
+        </header>
+
+        <section id="login-section" class="mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-brand-primary">Acceso de Administrador</h2>
+            <div class="p-4 border rounded-lg shadow-sm bg-blue-50">
+                <div class="mb-4">
+                    <label for="admin-user" class="block text-sm font-medium text-gray-700">Usuario</label>
+                    <input type="text" id="admin-user" class="w-full p-2 border border-gray-300 rounded-lg" value="HRBP">
+                </div>
+                <div class="mb-4">
+                    <label for="admin-pass" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <input type="password" id="admin-pass" class="w-full p-2 border border-gray-300 rounded-lg" value="Admin.123">
+                </div>
+                <button id="login-btn" class="w-full bg-red-600 text-white py-2 rounded-lg font-semibold hover:bg-red-700">
+                    Ingresar
+                </button>
+                <p id="login-msg" class="text-sm mt-3 text-red-500 text-center hidden"></p>
+            </div>
+        </section>
+
+
+        <section id="config-section" class="hidden">
+            <h2 class="text-xl font-semibold mb-4 text-brand-primary">Habilidades y Preguntas</h2>
+            
+            <p class="text-sm text-gray-600 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                **Instrucción:** Define cada habilidad, el tipo de test y la pregunta simple que la evalúa. El Score Máximo debe ser la puntuación de la respuesta "ideal".
+            </p>
+
+            <div id="habilidades-container" class="space-y-4 mb-6">
+                </div>
+
+            <button id="add-habilidad-btn" class="w-full bg-brand-accent text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+                + Agregar Nueva Habilidad
+            </button>
+            
+            <hr class="my-6">
+
+            <button id="save-config-btn" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
+                GUARDAR CONFIGURACIÓN EN GOOGLE SHEETS
+            </button>
+            
+            <p id="status-msg" class="text-sm mt-4 text-center hidden"></p>
+        </section>
+        
+    </main>
+
     <script>
         // !!! DEBE REEMPLAZAR ESTA URL CON LA QUE OBTENGA DEL DESPLIEGUE DE GOOGLE APPS SCRIPT !!!
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz9LnH4XbgyT_HtfNWfDerrnL3It4UlH-WPf4vBQYuNNez4WTlRajUsXb6QFajvejCW/exec'; 
@@ -293,223 +353,9 @@
         }
         
     </script>
-    <style>
-        /* Estilos base */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-start justify-center p-4">
-
-    <main class="w-full max-w-3xl bg-white rounded-xl shadow-2xl p-6 md:p-10 mt-8 border-t-4 border-red-500">
-        
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-red-700 mb-2">Panel de Administración de Pruebas</h1>
-            <p class="text-gray-500 text-lg">Define las habilidades a evaluar</p>
-            <div class="h-1 w-20 bg-red-500 mx-auto mt-4 rounded-full"></div>
-        </header>
-
-        <section id="login-section" class="mb-8">
-            <h2 class="text-xl font-semibold mb-4 text-brand-primary">Acceso de Administrador</h2>
-            <div class="p-4 border rounded-lg shadow-sm bg-blue-50">
-                <div class="mb-4">
-                    <label for="admin-user" class="block text-sm font-medium text-gray-700">Usuario</label>
-                    <input type="text" id="admin-user" class="w-full p-2 border border-gray-300 rounded-lg" value="HRBP">
-                </div>
-                <div class="mb-4">
-                    <label for="admin-pass" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                    <input type="password" id="admin-pass" class="w-full p-2 border border-gray-300 rounded-lg" value="Admin.123">
-                </div>
-                <button id="login-btn" class="w-full bg-red-600 text-white py-2 rounded-lg font-semibold hover:bg-red-700">
-                    Ingresar
-                </button>
-                <p id="login-msg" class="text-sm mt-3 text-red-500 text-center hidden"></p>
-            </div>
-        </section>
-
-
-        <section id="config-section" class="hidden">
-            <h2 class="text-xl font-semibold mb-4 text-brand-primary">Habilidades y Preguntas</h2>
-            
-            <p class="text-sm text-gray-600 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
-                **Instrucción:** Define cada habilidad, el tipo de test y la pregunta simple que la evalúa. El Score Máximo debe ser la puntuación de la respuesta "ideal".
-            </p>
-
-            <div id="habilidades-container" class="space-y-4 mb-6">
-                </div>
-
-            <button id="add-habilidad-btn" class="w-full bg-brand-accent text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-                + Agregar Nueva Habilidad
-            </button>
-            
-            <hr class="my-6">
-
-            <button id="save-config-btn" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
-                GUARDAR CONFIGURACIÓN EN GOOGLE SHEETS
-            </button>
-            
-            <p id="status-msg" class="text-sm mt-4 text-center hidden"></p>
-        </section>
-        
-    </main>
-
-    <script>
-        // !!! DEBE REEMPLAZAR ESTA URL CON LA QUE OBTENGA DEL DESPLIEGUE DE GOOGLE APPS SCRIPT !!!
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz9LnH4XbgyT_HtfNWfDerrnL3It4UlH-WPf4vBQYuNNez4WTlRajUsXb6QFajvejCW/exec'; 
-        
-        // Credenciales de Admin (DEBEN COINCIDIR CON EL APPS SCRIPT)
-        const ADMIN_USERNAME = 'HRBP';
-        const ADMIN_PASSWORD = 'Admin.123';
-        
-        const loginSection = document.getElementById('login-section');
-        const configSection = document.getElementById('config-section');
-        const loginBtn = document.getElementById('login-btn');
-        const addHabilidadBtn = document.getElementById('add-habilidad-btn');
-        const saveConfigBtn = document.getElementById('save-config-btn');
-        const habilidadesContainer = document.getElementById('habilidades-container');
-        const statusMsg = document.getElementById('status-msg');
-        const loginMsg = document.getElementById('login-msg');
-
-        let habilidadCounter = 0;
-
-        // --- LÓGICA DE LOGIN ---
-        loginBtn.addEventListener('click', () => {
-            const user = document.getElementById('admin-user').value.trim();
-            const pass = document.getElementById('admin-pass').value.trim();
-            
-            if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
-                loginSection.classList.add('hidden');
-                configSection.classList.remove('hidden');
-                loginMsg.classList.add('hidden');
-                
-                // Cargar configuración inicial (o empezar con una en blanco)
-                addHabilidadRow('Determinación', 'DISC', '¿Qué harías mejor al enfrentarte a un desafío?', 1);
-                addHabilidadRow('Atención al Detalle', 'DISC', '¿Qué harías menos al enfrentarte a un desafío?', -1);
-            } else {
-                loginMsg.textContent = 'Usuario o Contraseña incorrectos.';
-                loginMsg.classList.remove('hidden');
-            }
-        });
-
-        // --- LÓGICA DE GESTIÓN DE HABILIDADES ---
-
-        /** Agrega una nueva fila para definir una habilidad/pregunta */
-        function addHabilidadRow(habilidad = '', tipo = 'DISC', pregunta = '', scoreMax = 1) {
-            habilidadCounter++;
-            const id = `H${habilidadCounter}`;
-            
-            const rowHtml = `
-                <div class="habilidad-row p-4 border border-gray-200 rounded-lg bg-white shadow-sm" data-id="${id}">
-                    <h4 class="font-bold text-lg text-brand-primary mb-2">Habilidad #${habilidadCounter} (${id})</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500">Habilidad</label>
-                            <input type="text" name="habilidad-name" value="${habilidad}" class="w-full p-2 border rounded-lg text-sm" placeholder="Ej: Mejora Continua" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500">Tipo de Test</label>
-                            <select name="habilidad-type" class="w-full p-2 border rounded-lg text-sm bg-white">
-                                <option value="DISC" ${tipo === 'DISC' ? 'selected' : ''}>DISC (Forzada)</option>
-                                <option value="SJT" ${tipo === 'SJT' ? 'selected' : ''}>SJT (Situacional)</option>
-                                <option value="LOGICA" ${tipo === 'LOGICA' ? 'selected' : ''}>Lógica (Múltiple)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500">Score Max Ideal</label>
-                            <input type="number" name="habilidad-max-score" value="${scoreMax}" class="w-full p-2 border rounded-lg text-sm" required>
-                        </div>
-                        <div class="flex items-end">
-                            <button type="button" class="remove-habilidad-btn w-full bg-red-100 text-red-700 py-2 rounded-lg text-sm font-semibold hover:bg-red-200 transition">
-                                Eliminar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                         <label class="block text-xs font-medium text-gray-500">Pregunta/Ítem (Breve descripción)</label>
-                         <input type="text" name="habilidad-question" value="${pregunta}" class="w-full p-2 border rounded-lg text-sm" placeholder="Ej: Escenario de Bug no previsto" required>
-                    </div>
-                </div>
-            `;
-            habilidadesContainer.insertAdjacentHTML('beforeend', rowHtml);
-            
-            // Re-agregar listener al botón de eliminar (ya que es un elemento nuevo)
-            document.querySelectorAll('.remove-habilidad-btn').forEach(btn => {
-                btn.onclick = (e) => e.target.closest('.habilidad-row').remove();
-            });
-        }
-        
-        addHabilidadBtn.addEventListener('click', () => addHabilidadRow('', 'SJT', '', 5));
-
-        // --- LÓGICA DE GUARDAR CONFIGURACIÓN ---
-        saveConfigBtn.addEventListener('click', async () => {
-            const rows = document.querySelectorAll('.habilidad-row');
-            if (rows.length === 0) {
-                updateStatus('Agrega al menos una habilidad.', 'warning');
-                return;
-            }
-            
-            // 1. Recolectar datos
-            const configData = [];
-            rows.forEach(row => {
-                const id = row.getAttribute('data-id');
-                const name = row.querySelector('input[name="habilidad-name"]').value.trim();
-                const type = row.querySelector('select[name="habilidad-type"]').value;
-                const question = row.querySelector('input[name="habilidad-question"]').value.trim();
-                const maxScore = row.querySelector('input[name="habilidad-max-score"]').value;
-
-                if (name && question) {
-                    // La estructura de la fila que Apps Script espera
-                    configData.push([id, name, question, parseFloat(maxScore)]);
-                }
-            });
-
-            if (configData.length === 0) {
-                 updateStatus('Completa todos los campos antes de guardar.', 'warning');
-                 return;
-            }
-
-            // 2. Preparar Payload y enviar
-            const payload = {
-                action: 'saveConfig',
-                username: ADMIN_USERNAME,
-                password: ADMIN_PASSWORD,
-                config: configData
-            };
-            
-            updateStatus('Guardando configuración...', 'loading');
-            
-            try {
-                const response = await fetch(SCRIPT_URL + '?action=saveConfig', {
-                    method: 'POST',
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                // Nota: Debido a `no-cors`, el `response.ok` no se puede verificar directamente, 
-                // pero la petición se envía. Asumimos éxito a menos que haya un error de red.
-                updateStatus('✅ Configuración guardada con éxito. Actualiza el test del usuario.', 'success');
-
-            } catch (error) {
-                console.error('Error al guardar la configuración:', error);
-                updateStatus('❌ Error al conectar con el servidor: Revisa la URL del Apps Script.', 'error');
-            }
-        });
-
-        // Función para mostrar el estado
-        function updateStatus(message, type) {
-            statusMsg.textContent = message;
-            statusMsg.classList.remove('hidden', 'text-green-600', 'text-red-500', 'text-yellow-600');
-            
-            if (type === 'success') statusMsg.classList.add('text-green-600');
-            else if (type === 'error') statusMsg.classList.add('text-red-500');
-            else if (type === 'warning') statusMsg.classList.add('text-yellow-600');
-            else if (type === 'loading') statusMsg.textContent = message + ' (Espera...)';
-        }
-        
-    </script>
 </body>
 
 </html>
+
 
 
