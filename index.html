@@ -1,260 +1,396 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluación de Competencias | Disruptive Talent</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        // Basado en el Branding de Disruptive Talent
-                        'dt-primary': '#0F3460', // Navy Blue (Fondo principal, textos)
-                        'dt-accent': '#3B82F6',  // Accent Blue (Botones, Destacados)
-                        'dt-secondary': '#E5E7EB', // Gris claro (Bordes, Separadores)
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        
-        /* Estilo para el input de respuesta forzada (DISC) */
-        .forced-choice-group input[type="radio"]:checked + label {
-            border-color: #3B82F6; /* dt-accent */
-            background-color: #EBF5FF; /* Light Blue */
-            font-weight: 600;
-        }
-        .nav-btn { transition: all 0.3s ease; }
-        .test-section { display: none; }
-        #results-container { min-height: 400px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluación de Competencias | Disruptive Talent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'dt-primary': '#0F3460',
+            'dt-accent': '#3B82F6',
+            'dt-secondary': '#E5E7EB',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .nav-btn { transition: all 0.3s ease; }
+    .test-section { display: none; }
+    .test-section.active { display: block; }
+    .forced-choice input[type="radio"]:checked + label {
+      border-color: #3B82F6; background-color: #EBF5FF; font-weight: 600;
+    }
+  </style>
 </head>
 <body class="bg-gray-50 flex items-center justify-center min-h-screen p-4 md:p-8">
+  <main class="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-6 md:p-10 border-t-8 border-dt-accent">
+    <header class="text-center mb-10">
+      <div class="flex items-center justify-center mb-3">
+        <img src="icon_dark.png" alt="Disruptive Talent Logo" class="h-8 mr-3" />
+        <h1 class="text-3xl font-extrabold text-dt-primary">Talent Assessment</h1>
+      </div>
+      <p class="text-gray-500 text-lg">Evaluación de Competencias para la Transformación Digital</p>
+      <div class="h-1 w-20 bg-dt-accent mx-auto mt-4 rounded-full"></div>
+    </header>
 
-    <main class="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-6 md:p-10 border-t-8 border-dt-accent">
-        
-        <header class="text-center mb-10">
-            <div class="flex items-center justify-center mb-3">
-                 <img src="icon_dark.png" alt="Disruptive Talent Logo" class="h-8 mr-3">
-                 <h1 class="text-3xl font-extrabold text-dt-primary">Talent Assessment</h1>
+    <form id="psychometric-test-form" class="space-y-10">
+      <!-- 1. Datos personales -->
+      <section id="section-1" class="test-section active">
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">1/6. Información Personal</h2>
+        <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">Proporciona tus datos para el reporte de feedback.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-dt-primary">Nombre completo</label>
+            <input name="nombre" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-dt-primary">Correo</label>
+            <input type="email" name="correo" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-dt-primary">Teléfono</label>
+            <input name="telefono" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-dt-primary">Vacante / Área</label>
+            <input name="vacante" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. DISC (de batería) 4 ítems DISC en formato mejor/menos) -->
+      <section id="section-2" class="test-section">
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">2/6. Estilo de Comportamiento (DISC)</h2>
+        <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">Instrucciones: En cada ítem, elige la opción que <b>MEJOR</b> te describe y la que <b>MENOS</b> te describe.</p>
+        <div id="disc-container" class="space-y-6"></div>
+      </section>
+
+      <!-- 3. SJT -->
+      <section id="section-3" class="test-section">
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">3/6. Juicio Situacional (SJT)</h2>
+        <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">Valora del 1 (Muy improbable) al 5 (Muy probable) qué tanto harías la acción propuesta.</p>
+        <div id="sjt-container" class="space-y-6"></div>
+      </section>
+
+      <!-- 4. Lógica (auto-evaluación simple por falta de opciones objetivas) -->
+      <section id="section-4" class="test-section">
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">4/6. Pensamiento Lógico</h2>
+        <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">Selecciona tu nivel de confianza (1 a 5) al resolver lo que se plantea.</p>
+        <div id="logic-container" class="space-y-6"></div>
+      </section>
+
+      <!-- 5. Habilidades Dinámicas (mismo set agrupado por categoría) -->
+      <section id="section-5" class="test-section">
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">5/6. Habilidades por Categoría</h2>
+        <p class="text-sm text-gray-600 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-dt-accent">Selecciona tu nivel de identificación con los enunciados por categoría.</p>
+        <div id="dynamic-container" class="space-y-6"></div>
+      </section>
+
+      <!-- 6. Resultados (pantalla final) -->
+      <section id="section-6" class="test-section">
+        <div id="loading-indicator" class="hidden">
+          <div class="flex items-center justify-center p-8">
+            <svg class="animate-spin h-8 w-8 text-dt-primary mr-3" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-lg text-dt-primary font-medium">Calculando y guardando resultados...</span>
+          </div>
+          <p class="text-sm text-gray-500 text-center">Esto puede tomar unos segundos.</p>
+        </div>
+
+        <div id="results-container" class="mt-4 p-6 bg-dt-primary text-white rounded-lg hidden">
+          <h2 class="text-2xl font-bold mb-4">¡Gracias por completar la Evaluación!</h2>
+          <p class="mb-6">Tu perfil ha sido procesado por Disruptive Talent.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+            <div class="bg-white p-4 rounded-lg text-dt-primary shadow-md">
+              <h3 class="font-bold text-xl mb-1">Top Competencias</h3>
+              <ol id="top-competencias" class="list-decimal list-inside text-dt-primary font-semibold"></ol>
+              <p class="text-xs mt-2 text-gray-500">Basado en tus respuestas.</p>
             </div>
-            
-            <p class="text-gray-500 text-lg">Evaluación de Competencias para la Transformación Digital</p>
-            <div class="h-1 w-20 bg-dt-accent mx-auto mt-4 rounded-full"></div>
-        </header>
-
-        <form id="psychometric-test-form">
-            
-            <section id="section-1" class="test-section active">
-                <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">1/5. Información Personal</h2>
-                 <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">
-                    Proporciona tus datos para el reporte de *feedback* detallado de tu perfil.
-                </p>
-                </section>
-
-            
-            <section id="section-2" class="test-section">
-                <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">2/5. Estilo de Comportamiento (DISC)</h2>
-                 <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">
-                    Instrucciones: En cada grupo, selecciona la opción que **MEJOR** te describe y la que **MENOS** te describe.
-                </p>
-                <div class="mb-8 p-4 border border-dt-secondary rounded-lg shadow-sm forced-choice-group">
-                    <p class="font-medium mb-4 text-dt-primary">1. Al enfrentar un nuevo proyecto:</p>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <input type="radio" id="b1-mejor-d" name="b1-mejor" value="D" class="hidden">
-                            <label for="b1-mejor-d" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Mejor: Lograr el objetivo es mi prioridad.</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="b1-menos-d" name="b1-menos" value="D" class="hidden">
-                            <label for="b1-menos-d" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Menos: Lograr el objetivo es mi prioridad.</label>
-                        </div>
-                         <div>
-                            <input type="radio" id="b1-mejor-c" name="b1-mejor" value="C" class="hidden">
-                            <label for="b1-mejor-c" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Mejor: La precisión y la calidad son claves para el éxito.</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="b1-menos-c" name="b1-menos" value="C" class="hidden">
-                            <label for="b1-menos-c" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Menos: La precisión y la calidad son claves para el éxito.</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-8 p-4 border border-dt-secondary rounded-lg shadow-sm forced-choice-group">
-                    <p class="font-medium mb-4 text-dt-primary">2. Cuando mi trabajo es criticado:</p>
-                    <div class="grid grid-cols-2 gap-4">
-                         <div>
-                            <input type="radio" id="b2-mejor-d" name="b2-mejor" value="D" class="hidden">
-                            <label for="b2-mejor-d" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Mejor: Me enfoco en resolver el problema y seguir avanzando.</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="b2-menos-d" name="b2-menos" value="D" class="hidden">
-                            <label for="b2-menos-d" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Menos: Me enfoco en resolver el problema y seguir avanzando.</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="b2-mejor-c" name="b2-mejor" value="C" class="hidden">
-                            <label for="b2-mejor-c" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Mejor: Analizo la crítica como una oportunidad de mejorar mi metodología.</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="b2-menos-c" name="b2-menos" value="C" class="hidden">
-                            <label for="b2-menos-c" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">Menos: Analizo la crítica como una oportunidad de mejorar mi metodología.</label>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="section-3" class="test-section">
-                <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">3/5. Juicio Situacional (SJT)</h2>
-                <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">
-                    Instrucciones: Evalúa qué tan probable es que realices cada acción en las situaciones presentadas (1: Muy improbable, 5: Muy probable).
-                </p>
-                <div class="mb-8 p-4 border border-dt-secondary rounded-lg shadow-sm">
-                    <p class="font-medium mb-4 text-dt-primary">1. Has entregado un código funcional, pero un revisor te indica que no sigue el nuevo estándar de nomenclatura de la empresa. La fecha límite de entrega ya pasó.</p>
-                    <p class="text-sm italic text-gray-500 mb-3">Acción: Corregiría el código de inmediato, y programaría un recordatorio para revisar y modificar la guía de estilo si es necesario.</p>
-                    <div class="flex justify-between items-center space-x-2 text-sm">
-                        <span>1 (Improbable)</span>
-                        <div class="flex space-x-3">
-                            <label class="cursor-pointer"><input type="radio" name="sjt1" value="1" required class="form-radio h-4 w-4 text-dt-accent"> 1</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt1" value="2" class="form-radio h-4 w-4 text-dt-accent"> 2</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt1" value="3" class="form-radio h-4 w-4 text-dt-accent"> 3</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt1" value="4" class="form-radio h-4 w-4 text-dt-accent"> 4</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt1" value="5" class="form-radio h-4 w-4 text-dt-accent"> 5</label>
-                        </div>
-                        <span>5 (Muy Probable)</span>
-                    </div>
-                </div>
-                <div class="mb-8 p-4 border border-dt-secondary rounded-lg shadow-sm">
-                    <p class="font-medium mb-4 text-dt-primary">2. Estás a pocas horas de la entrega de un módulo crítico y descubres un *bug* complejo que no habías previsto. El equipo ya está agotado.</p>
-                    <p class="text-sm italic text-gray-500 mb-3">Acción: Notificaría inmediatamente el riesgo, propondría un plan de acción para trabajar horas extras si es necesario y tomaría el liderazgo para coordinar la solución.</p>
-                    <div class="flex justify-between items-center space-x-2 text-sm">
-                        <span>1 (Improbable)</span>
-                        <div class="flex space-x-3">
-                             <label class="cursor-pointer"><input type="radio" name="sjt2" value="1" required class="form-radio h-4 w-4 text-dt-accent"> 1</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt2" value="2" class="form-radio h-4 w-4 text-dt-accent"> 2</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt2" value="3" class="form-radio h-4 w-4 text-dt-accent"> 3</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt2" value="4" class="form-radio h-4 w-4 text-dt-accent"> 4</label>
-                            <label class="cursor-pointer"><input type="radio" name="sjt2" value="5" class="form-radio h-4 w-4 text-dt-accent"> 5</label>
-                        </div>
-                        <span>5 (Muy Probable)</span>
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-4" class="test-section">
-                <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">4/5. Capacidad Lógica (Aptitud)</h2>
-                 <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">
-                    Instrucciones: Selecciona la opción correcta.
-                </p>
-                <div class="mb-8 p-4 border border-dt-secondary rounded-lg shadow-sm">
-                    <p class="font-medium mb-4 text-dt-primary">1. ¿Qué número sigue en la secuencia: 3, 9, 27, 81, ?</p>
-                    <div class="flex flex-col space-y-2 text-sm">
-                        <label class="flex items-center hover:bg-gray-100 p-2 rounded">
-                            <input type="radio" name="logic1" value="a" required class="form-radio h-4 w-4 text-dt-accent">
-                            <span class="ml-3">162</span>
-                        </label>
-                        <label class="flex items-center hover:bg-gray-100 p-2 rounded">
-                            <input type="radio" name="logic1" value="b" class="form-radio h-4 w-4 text-dt-accent">
-                            <span class="ml-3">243</span> 
-                        </label>
-                        <label class="flex items-center hover:bg-gray-100 p-2 rounded">
-                            <input type="radio" name="logic1" value="c" class="form-radio h-4 w-4 text-dt-accent">
-                            <span class="ml-3">180</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-8 p-4 border border-dt-secondary rounded-lg shadow-sm">
-                    <p class="font-medium mb-4 text-dt-primary">2. Si "Código" es a "Sistema" como "Ladrillo" es a:</p>
-                    <div class="flex flex-col space-y-2 text-sm">
-                        <label class="flex items-center hover:bg-gray-100 p-2 rounded">
-                            <input type="radio" name="logic2" value="a" class="form-radio h-4 w-4 text-dt-accent">
-                            <span class="ml-3">Cemento</span>
-                        </label>
-                        <label class="flex items-center hover:bg-gray-100 p-2 rounded">
-                            <input type="radio" name="logic2" value="b" class="form-radio h-4 w-4 text-dt-accent">
-                            <span class="ml-3">Ingeniero</span>
-                        </label>
-                        <label type="radio" class="flex items-center hover:bg-gray-100 p-2 rounded">
-                            <input type="radio" name="logic2" value="c" required class="form-radio h-4 w-4 text-dt-accent">
-                            <span class="ml-3">Edificio</span> 
-                        </label>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="section-5" class="test-section">
-                <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">5/5. Evaluación de Habilidades (Dinámica)</h2>
-                <p class="text-sm text-gray-600 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-dt-accent">
-                    Instrucciones: Evalúa cada escenario o pregunta de acuerdo a tu nivel de identificación o respuesta.
-                </p>
-                <div id="dynamic-questions-container">
-                    <div id="loading-dynamic" class="flex items-center justify-center p-8 text-gray-500">
-                        Cargando configuración de habilidades...
-                    </div>
-                </div>
-            </section>
-
-
-            <section id="section-6" class="test-section text-center">
-                <div id="loading-indicator" class="hidden">
-                    <div class="flex items-center justify-center p-8">
-                        <svg class="animate-spin h-8 w-8 text-dt-primary mr-3" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span class="text-lg text-dt-primary font-medium">Calculando y guardando resultados...</span>
-                    </div>
-                    <p class="text-sm text-gray-500">Esto puede tomar unos segundos.</p>
-                </div>
-
-                <div id="results-container" class="mt-4 p-6 bg-dt-primary text-white rounded-lg hidden">
-                    <h2 class="text-2xl font-bold mb-4">¡Gracias por completar la Evaluación!</h2>
-                    <p class="mb-6">Tu perfil ha sido procesado por Disruptive Talent.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                        <div class="bg-white p-4 rounded-lg text-dt-primary shadow-md">
-                            <h3 class="font-bold text-xl mb-1">Perfil de Comportamiento</h3>
-                            <p id="result-dominant-profile" class="text-2xl font-extrabold text-dt-accent"></p>
-                            <p class="text-sm mt-2">Tu principal tendencia según el DISC simplificado.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg text-dt-primary shadow-md">
-                            <h3 class="font-bold text-xl mb-1">Score Habilidades</h3>
-                            <p id="result-dynamic-score" class="text-2xl font-extrabold text-dt-accent"></p>
-                            <p class="text-sm mt-2">Puntuación total en habilidades configuradas por el Admin.</p>
-                        </div>
-                    </div>
-                    
-                    <p class="text-sm mt-6 text-gray-300">Pronto recibirás un *feedback* más detallado. ¡Gracias por participar!</p>
-                </div>
-                
-                <div id="error-message" class="mt-4 p-4 bg-red-100 text-red-700 border-l-4 border-red-500 rounded-lg hidden text-left">
-                    Hubo un error al intentar guardar los datos. Por favor, revisa la configuración del Apps Script.
-                </div>
-            </section>
-
-            <div id="navigation-controls" class="flex justify-between mt-8 pt-6 border-t border-dt-secondary">
-                <button type="button" id="prev-btn" class="nav-btn bg-gray-200 text-gray-700 py-2 px-6 rounded-lg font-semibold hover:bg-gray-300 hidden">
-                    Anterior
-                </button>
-                <button type="button" id="next-btn" class="nav-btn bg-dt-accent text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 ml-auto">
-                    Siguiente
-                </button>
-                <button type="button" id="submit-btn" class="nav-btn bg-dt-primary text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 hidden ml-auto">
-                    Finalizar Test
-                </button>
+            <div class="bg-white p-4 rounded-lg text-dt-primary shadow-md">
+              <h3 class="font-bold text-xl mb-1">Puntaje Total</h3>
+              <p id="puntaje-total" class="text-2xl font-extrabold text-dt-accent"></p>
+              <p class="text-sm mt-2">Suma ponderada por categorías.</p>
             </div>
-            
-        </form>
-    </main>
+          </div>
 
-    <script>
-        // ... (Tu código JavaScript para la lógica de navegación, puntuación y Apps Script) ...
-    </script>
+          <div class="mt-6 bg-white text-dt-primary p-4 rounded-lg shadow">
+            <h4 class="font-bold">Mensaje</h4>
+            <p id="mensaje-final" class="text-sm mt-1">Agradecemos tu tiempo. En breve recibirás un reporte más detallado.</p>
+          </div>
+        </div>
+
+        <div id="error-message" class="mt-4 p-4 bg-red-100 text-red-700 border-l-4 border-red-500 rounded-lg hidden text-left">
+          Hubo un error al intentar guardar los datos. Por favor, revisa la configuración del Apps Script.
+        </div>
+      </section>
+
+      <div id="navigation-controls" class="flex justify-between mt-8 pt-6 border-t border-dt-secondary">
+        <button type="button" id="prev-btn" class="nav-btn bg-gray-200 text-gray-700 py-2 px-6 rounded-lg font-semibold hover:bg-gray-300 hidden">Anterior</button>
+        <button type="button" id="next-btn" class="nav-btn bg-dt-accent text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 ml-auto">Siguiente</button>
+        <button type="button" id="submit-btn" class="nav-btn bg-dt-primary text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 hidden ml-auto">Finalizar Test</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // ======= CONFIG =======
+    // Reemplaza con tu URL de Apps Script desplegado como Web App (permiso: "Cualquiera con el enlace")
+    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+    // Batería de preguntas (tomadas del archivo provisto)
+    // Campos: categoria, tipo, enunciado, tags
+    const bateria = [
+      { categoria: 'Orientación a Resultados', tipo: 'DISC', enunciado: 'Identifica el comportamiento que MEJOR te describe al trabajar bajo presión.', opciones: ['Determinación', 'Liderazgo', 'Proactividad'] },
+      { categoria: 'Atención al Detalle', tipo: 'DISC', enunciado: 'Identifica el comportamiento que MENOS te describe al evaluar la calidad de tu trabajo.', opciones: ['Rigurosidad', 'Cumplimiento', 'Calidad'] },
+      { categoria: 'Flexibilidad y Adaptación', tipo: 'SJT', enunciado: 'Escenario: Un requisito clave cambia a mitad del sprint. ¿Qué acción tomarías?', tags: ['Gestión del Cambio','Resiliencia','Aprendizaje Continuo'] },
+      { categoria: 'Gestión del Estrés', tipo: 'SJT', enunciado: 'Escenario: Descubres un bug crítico horas antes del lanzamiento. ¿Cómo priorizas tus acciones?', tags: ['Foco','Calma bajo Presión','Priorización'] },
+      { categoria: 'Pensamiento Crítico', tipo: 'LÓGICA', enunciado: 'Identifica el patrón que continúa la secuencia dada.', tags: ['Análisis','Resolución de Problemas','Razonamiento Abstracto'] },
+      { categoria: 'Innovación', tipo: 'LÓGICA', enunciado: '¿Cuál de las siguientes propuestas ofrece la solución más eficiente al problema presentado?', tags: ['Creatividad','Curiosidad','Mejora Continua'] },
+      { categoria: 'Comunicación Efectiva', tipo: 'SJT', enunciado: 'Escenario: Debes explicar un concepto técnico complejo a un cliente no técnico. ¿Cuál es tu enfoque?', tags: ['Claridad','Escucha Activa','Negociación'] },
+      { categoria: 'Autodesarrollo', tipo: 'SJT', enunciado: 'Escenario: Hay una nueva tecnología esencial para tu rol, pero nadie la domina. ¿Qué haces?', tags: ['Iniciativa','Curiosidad','Proactividad'] },
+      { categoria: 'Colaboración', tipo: 'DISC', enunciado: 'Elige la frase que MEJOR te describe al trabajar en un conflicto de equipo.', opciones: ['Trabajo en Equipo','Empatía','Interdependencia'] },
+      { categoria: 'Liderazgo Informal', tipo: 'DISC', enunciado: 'Elige la frase que MENOS te describe al dirigir una reunión.', opciones: ['Inspiración','Toma de Decisiones','Visión Estratégica'] },
+    ];
+
+    // Generar UI por tipo
+    const discItems = bateria.filter(q => q.tipo === 'DISC');
+    const sjtItems  = bateria.filter(q => q.tipo === 'SJT');
+    const logItems  = bateria.filter(q => q.tipo === 'LÓGICA');
+
+    const discContainer = document.getElementById('disc-container');
+    const sjtContainer = document.getElementById('sjt-container');
+    const logicContainer = document.getElementById('logic-container');
+    const dynamicContainer = document.getElementById('dynamic-container');
+
+    // DISC: Mejor / Menos entre 3 opciones (puntuación: mejor=2, menos=0 para la categoría)
+    discItems.forEach((q, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm forced-choice';
+      wrap.innerHTML = `
+        <p class="font-medium mb-4 text-dt-primary">${idx+1}. ${q.enunciado}<span class="block text-xs text-gray-500">Categoría: ${q.categoria}</span></p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-sm font-semibold mb-2">MEJOR me describe</p>
+            ${q.opciones.map((opt, i) => `
+              <div class="mb-2">
+                <input required type="radio" id="disc${idx}-best-${i}" name="disc${idx}-best" value="${opt}" class="hidden" />
+                <label for="disc${idx}-best-${i}" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">${opt}</label>
+              </div>
+            `).join('')}
+          </div>
+          <div>
+            <p class="text-sm font-semibold mb-2">MENOS me describe</p>
+            ${q.opciones.map((opt, i) => `
+              <div class="mb-2">
+                <input required type="radio" id="disc${idx}-least-${i}" name="disc${idx}-least" value="${opt}" class="hidden" />
+                <label for="disc${idx}-least-${i}" class="block p-3 border rounded-lg cursor-pointer text-sm hover:bg-gray-100">${opt}</label>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      discContainer.appendChild(wrap);
+    });
+
+    // SJT: Likert 1..5
+    const likert = (name) => `
+      <div class="flex justify-between items-center space-x-2 text-sm">
+        <span>1</span>
+        <div class="flex space-x-3">
+          ${[1,2,3,4,5].map(v => `
+            <label class="cursor-pointer"><input type="radio" name="${name}" value="${v}" required class="form-radio h-4 w-4 text-dt-accent"> ${v}</label>
+          `).join('')}
+        </div>
+        <span>5</span>
+      </div>`;
+
+    sjtItems.forEach((q, idx) => {
+      const el = document.createElement('div');
+      el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
+      el.innerHTML = `
+        <p class="font-medium mb-2 text-dt-primary">${idx+1}. ${q.enunciado}</p>
+        <p class="text-xs text-gray-500 mb-3">Competencias: ${q.tags?.join(', ') || ''}</p>
+        ${likert(`sjt${idx}`)}
+      `;
+      sjtContainer.appendChild(el);
+    });
+
+    // Lógica: Likert de confianza (1..5) por falta de opciones objetivas en la batería entregada
+    logItems.forEach((q, idx) => {
+      const el = document.createElement('div');
+      el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
+      el.innerHTML = `
+        <p class="font-medium mb-2 text-dt-primary">${idx+1}. ${q.enunciado}</p>
+        <p class="text-xs text-gray-500 mb-3">Dimensiones: ${q.tags?.join(', ') || ''}</p>
+        ${likert(`logic${idx}`)}
+      `;
+      logicContainer.appendChild(el);
+    });
+
+    // Dinámica: Agrupación por categoría, auto-percepción (1..5)
+    const categorias = [...new Set(bateria.map(b => b.categoria))];
+    categorias.forEach((cat, idx) => {
+      const el = document.createElement('div');
+      el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
+      el.innerHTML = `
+        <div class="flex items-center justify-between">
+          <p class="font-semibold text-dt-primary">${idx+1}. ${cat}</p>
+          ${likert(`dyn_${cat.replace(/\s+/g,'_')}`)}
+        </div>
+      `;
+      dynamicContainer.appendChild(el);
+    });
+
+    // ======= Navegación =======
+    const sections = [...document.querySelectorAll('.test-section')];
+    let current = 0;
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function showSection(i) {
+      sections.forEach((s, idx) => s.classList.toggle('active', idx === i));
+      prevBtn.classList.toggle('hidden', i === 0);
+      nextBtn.classList.toggle('hidden', i >= sections.length - 2);
+      submitBtn.classList.toggle('hidden', i < sections.length - 2);
+    }
+
+    prevBtn.addEventListener('click', () => { if (current > 0) { current--; showSection(current); } });
+    nextBtn.addEventListener('click', () => { if (validateSection(current)) { current++; showSection(current); } });
+    submitBtn.addEventListener('click', onSubmit);
+
+    function validateSection(i) {
+      // valida inputs required visibles en la sección
+      const sec = sections[i];
+      const required = sec.querySelectorAll('input[required], select[required], textarea[required]');
+      for (const input of required) {
+        const name = input.name;
+        if (input.type === 'radio') {
+          const group = sec.querySelectorAll(`input[name="${name}"]`);
+          const checked = [...group].some(r => r.checked);
+          if (!checked) { alert('Por favor, completa las preguntas requeridas.'); return false; }
+        } else if (!input.value) {
+          alert('Por favor, completa las preguntas requeridas.');
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // ======= Scoring =======
+    function computeScores(formData) {
+      const scores = {}; categorias.forEach(c => scores[c] = 0);
+
+      // DISC: mejor = +2, menos = 0 (se ignora), suma a su categoría
+      discItems.forEach((q, idx) => {
+        const best = formData.get(`disc${idx}-best`);
+        // bonus si best y least difieren (consistencia)
+        const least = formData.get(`disc${idx}-least`);
+        if (best) { scores[q.categoria] += 2; }
+        if (best && least && best === least) { scores[q.categoria] -= 1; } // penaliza elegir lo mismo
+      });
+
+      // SJT: 1..5 directo a la categoría
+      sjtItems.forEach((q, idx) => {
+        const v = Number(formData.get(`sjt${idx}`) || 0);
+        scores[q.categoria] += v;
+      });
+
+      // Lógica: 1..5 directo
+      logItems.forEach((q, idx) => {
+        const v = Number(formData.get(`logic${idx}`) || 0);
+        scores[q.categoria] += v;
+      });
+
+      // Dinámicas por categoría
+      categorias.forEach(cat => {
+        const v = Number(formData.get(`dyn_${cat.replace(/\s+/g,'_')}`) || 0);
+        scores[cat] += v;
+      });
+
+      const total = Object.values(scores).reduce((a,b)=>a+b,0);
+      return { scores, total };
+    }
+
+    function topCompetencias(scores, k=3) {
+      return Object.entries(scores)
+        .sort((a,b)=>b[1]-a[1])
+        .slice(0,k);
+    }
+
+    // ======= Submit & Sheets =======
+    async function onSubmit() {
+      if (!validateSection(current)) return;
+      const form = document.getElementById('psychometric-test-form');
+      const formData = new FormData(form);
+      const { scores, total } = computeScores(formData);
+
+      // UI feedback
+      document.getElementById('loading-indicator').classList.remove('hidden');
+      document.getElementById('results-container').classList.add('hidden');
+      document.getElementById('error-message').classList.add('hidden');
+
+      const payload = {
+        timestamp: new Date().toISOString(),
+        nombre: formData.get('nombre') || '',
+        correo: formData.get('correo') || '',
+        telefono: formData.get('telefono') || '',
+        vacante: formData.get('vacante') || '',
+        total,
+        scores,
+        respuestas: Object.fromEntries([...formData.entries()]),
+      };
+
+      // Mostrar resultados locales (aunque falle el envío)
+      renderResults(scores, total);
+
+      try {
+        if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_YOUR')) throw new Error('Falta configurar SCRIPT_URL');
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Respuesta no OK');
+        document.getElementById('loading-indicator').classList.add('hidden');
+        document.getElementById('results-container').classList.remove('hidden');
+        // Avanza a sección de resultados
+        current = sections.length - 1; showSection(current);
+      } catch (e) {
+        document.getElementById('loading-indicator').classList.add('hidden');
+        document.getElementById('error-message').classList.remove('hidden');
+        // Aún mostramos resultados locales
+        current = sections.length - 1; showSection(current);
+        console.error(e);
+      }
+    }
+
+    function renderResults(scores, total) {
+      const list = document.getElementById('top-competencias');
+      list.innerHTML = '';
+      topCompetencias(scores).forEach(([cat, val]) => {
+        const li = document.createElement('li');
+        li.textContent = `${cat}: ${val}`;
+        list.appendChild(li);
+      });
+      document.getElementById('puntaje-total').textContent = total;
+      document.getElementById('results-container').classList.remove('hidden');
+    }
+
+    // init
+    showSection(current);
+  </script>
 </body>
 </html>
