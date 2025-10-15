@@ -67,7 +67,7 @@
       <section id="section-2" class="test-section">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">2/4. Afirmaciones (Likert 1–5)</h2>
         <div class="mb-4 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm text-gray-700">
-          Responde de <b>1</b> (Totalmente en desacuerdo) a <b>5</b> (Totalmente de acuerdo). Mantuvimos la <b>misma escala</b> para todas las afirmaciones para facilitar el análisis estadístico.
+          Responde de <b>1</b> (Totalmente en desacuerdo) a <b>5</b> (Totalmente de acuerdo).
         </div>
         <div id="likert-container" class="space-y-6"></div>
       </section>
@@ -76,7 +76,7 @@
       <section id="section-3" class="test-section">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">3/4. Juicio Situacional (SJT)</h2>
         <div class="mb-4 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent text-sm text-gray-700">
-          Lee cada escenario y elige la opción indicada en las instrucciones del ítem (<b>MEJOR</b> opción o <b>MENOS</b> apropiada). Las alternativas están diseñadas para ser plausibles y evaluar la conducta en contexto laboral.
+          Lee cada escenario y elige la opción indicada en las instrucciones del ítem (<b>MEJOR</b> opción o <b>MENOS</b> apropiada). 
         </div>
         <div id="sjt-container" class="space-y-6"></div>
       </section>
@@ -136,7 +136,7 @@
   <script>
     // ======= CONFIG =======
     // Reemplaza con tu URL de Apps Script desplegado como Web App (permiso: "Cualquiera con el enlace")
-    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzr2ZsPf47d54hTuPGxI1wSadaOUnRFOSIeXkrheddJ6omJ5QFaJn1d7hlC7qio-t2X/exec";
 
     // ======= Banco de ítems (según documento de preguntas e instrucciones) =======
     // Escala uniforme Likert 1..5
@@ -197,7 +197,7 @@
     const LOGIC_ITEMS = [
       {
         categoria: 'Pensamiento Crítico', id: 'pc',
-        stem: 'Selecciona el número que continúa la siguiente secuencia lógica: 3, 5, 9, 15, 23, ___ (Patrón: +2, +4, +6, +8, +10)',
+        stem: 'Selecciona el número que continúa la siguiente secuencia lógica: 3, 5, 9, 15, 23, ___',
         opciones: ['31','32','33','34'],
         correct: '33'
       }
