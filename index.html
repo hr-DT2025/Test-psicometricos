@@ -34,7 +34,7 @@
         <img src="icon_dark.png" alt="Disruptive Talent Logo" class="h-8 mr-3" />
         <h1 class="text-3xl font-extrabold text-dt-primary">Talent Assessment</h1>
       </div>
-      <p class="text-gray-500 text-lg">Evaluación de Competencias</p>
+      <p class="text-gray-500 text-lg">Evaluación de Competencias para la Transformación Digital</p>
       <div class="h-1 w-20 bg-dt-accent mx-auto mt-4 rounded-full"></div>
     </header>
 
@@ -67,7 +67,7 @@
       <section id="section-2" class="test-section">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">2/4. Afirmaciones (Likert 1–5)</h2>
         <div class="mb-4 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm text-gray-700">
-          Responde de <b>1</b> (Totalmente en desacuerdo) a <b>5</b> (Totalmente de acuerdo).
+          Responde de <b>1</b> (Totalmente en desacuerdo) a <b>5</b> (Totalmente de acuerdo). Mantuvimos la <b>misma escala</b> para todas las afirmaciones para facilitar el análisis estadístico.
         </div>
         <div id="likert-container" class="space-y-6"></div>
       </section>
@@ -76,7 +76,7 @@
       <section id="section-3" class="test-section">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">3/4. Juicio Situacional (SJT)</h2>
         <div class="mb-4 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent text-sm text-gray-700">
-          Lee cada escenario y elige la opción indicada en las instrucciones del ítem (<b>MEJOR</b> opción o <b>MENOS</b> apropiada). 
+          Lee cada escenario y elige la opción indicada en las instrucciones del ítem (<b>MEJOR</b> opción o <b>MENOS</b> apropiada). Las alternativas están diseñadas para ser plausibles y evaluar la conducta en contexto laboral.
         </div>
         <div id="sjt-container" class="space-y-6"></div>
       </section>
@@ -136,7 +136,7 @@
   <script>
     // ======= CONFIG =======
     // Reemplaza con tu URL de Apps Script desplegado como Web App (permiso: "Cualquiera con el enlace")
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUxQtT2rw8a3F117UM24SqTQm9GgGueueV_dz32CwcmOCcKSeNexnyg38L6gRhN8BZ/exec";
+    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
     // ======= Banco de ítems (según documento de preguntas e instrucciones) =======
     // Escala uniforme Likert 1..5
@@ -197,7 +197,7 @@
     const LOGIC_ITEMS = [
       {
         categoria: 'Pensamiento Crítico', id: 'pc',
-        stem: 'Selecciona el número que continúa la siguiente secuencia lógica: 3, 5, 9, 15, 23, ___',
+        stem: 'Selecciona el número que continúa la siguiente secuencia lógica: 3, 5, 9, 15, 23, ___ (Patrón: +2, +4, +6, +8, +10)',
         opciones: ['31','32','33','34'],
         correct: '33'
       }
@@ -370,13 +370,21 @@
 
       try {
         if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_YOUR')) throw new Error('Falta configurar SCRIPT_URL');
+        const body = new URLSearchParams();
+        body.append('payload', JSON.stringify(payload));
+
         const res = await fetch(SCRIPT_URL, {
           method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body // Evita preflight CORS; no agregues headers manuales
         });
-        if (!res.ok) throw new Error('Respuesta no OK');
+
+        let ok = false;
+        try {
+          const data = await res.json();
+          ok = !!data.ok;
+        } catch (_) { /* puede no venir JSON válido; ignorar */ }
+
+        if (!res.ok || !ok) throw new Error('Respuesta no OK');
         document.getElementById('loading-indicator').classList.add('hidden');
         document.getElementById('results-container').classList.remove('hidden');
         current = sections.length - 1; showSection(current);
