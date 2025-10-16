@@ -2,18 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Evaluación de Competencias | Disruptive Talent</title>
+
+  <!-- Tailwind (puedes migrar a build/CLI cuando quieras; esto no afecta al CORS) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            'dt-primary': '#0F3460',
-            'dt-accent': '#3B82F6',
-            'dt-secondary': '#E5E7EB',
-          },
+          colors: { 'dt-primary': '#0F3460', 'dt-accent': '#3B82F6', 'dt-secondary': '#E5E7EB' },
           fontFamily: { sans: ['Inter', 'sans-serif'] },
         },
       },
@@ -22,16 +20,16 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
     body { font-family: 'Inter', sans-serif; }
-    .nav-btn { transition: all 0.3s ease; }
     .test-section { display: none; }
     .test-section.active { display: block; }
+    .nav-btn { transition: all .2s ease; }
   </style>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4 md:p-8">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4 md:p-8">
   <main class="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-6 md:p-10 border-t-8 border-dt-accent">
     <header class="text-center mb-10">
       <div class="flex items-center justify-center mb-3">
-        <img src="icon_dark.png" alt="Disruptive Talent Logo" class="h-8 mr-3" />
+        <img src="icon_dark.png" alt="Disruptive Talent" class="h-8 mr-3" />
         <h1 class="text-3xl font-extrabold text-dt-primary">Talent Assessment</h1>
       </div>
       <p class="text-gray-500 text-lg">Evaluación de Competencias para la Transformación Digital</p>
@@ -42,46 +40,45 @@
       <!-- 1. Datos personales -->
       <section id="section-1" class="test-section active">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">1/4. Información Personal</h2>
-        <p class="text-sm text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent">Proporciona tus datos para el reporte de feedback.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-dt-primary">Nombre completo</label>
-            <input name="nombre" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+            <input name="nombre" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-dt-primary">Correo</label>
-            <input type="email" name="correo" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+            <input type="email" name="correo" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-dt-primary">Teléfono</label>
-            <input name="telefono" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+            <input name="telefono" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-dt-primary">Vacante / Área</label>
-            <input name="vacante" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" />
+            <input name="vacante" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
         </div>
       </section>
 
-      <!-- 2. Sección Likert uniforme (1-5) -->
+      <!-- 2. Likert uniforme -->
       <section id="section-2" class="test-section">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">2/4. Afirmaciones (Likert 1–5)</h2>
         <div class="mb-4 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm text-gray-700">
-          Responde de <b>1</b> (Totalmente en desacuerdo) a <b>5</b> (Totalmente de acuerdo). Mantuvimos la <b>misma escala</b> para todas las afirmaciones para facilitar el análisis estadístico.
+          Responde de <b>1</b> (Totalmente en desacuerdo) a <b>5</b> (Totalmente de acuerdo).
         </div>
         <div id="likert-container" class="space-y-6"></div>
       </section>
 
-      <!-- 3. SJT (Elección Múltiple) -->
+      <!-- 3. SJT -->
       <section id="section-3" class="test-section">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">3/4. Juicio Situacional (SJT)</h2>
         <div class="mb-4 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent text-sm text-gray-700">
-          Lee cada escenario y elige la opción indicada en las instrucciones del ítem (<b>MEJOR</b> opción o <b>MENOS</b> apropiada). Las alternativas están diseñadas para ser plausibles y evaluar la conducta en contexto laboral.
+          Lee cada escenario y elige la opción indicada (<b>MEJOR</b> o <b>MENOS</b> efectiva).
         </div>
         <div id="sjt-container" class="space-y-6"></div>
       </section>
 
-      <!-- 4. Lógica (opción correcta) + Resultados -->
+      <!-- 4. Lógica + Resultados -->
       <section id="section-4" class="test-section">
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">4/4. Pensamiento Lógico y Resultados</h2>
         <div id="logic-container" class="space-y-6 mb-8"></div>
@@ -135,69 +132,64 @@
 
   <script>
     // ======= CONFIG =======
-    // Reemplaza con tu URL de Apps Script desplegado como Web App (permiso: "Cualquiera con el enlace")
-    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // <-- /exec
 
-    // ======= Banco de ítems (según documento de preguntas e instrucciones) =======
-    // Escala uniforme Likert 1..5
+    // ======= Ítems =======
     const LIKERT_ITEMS = [
-      { categoria: 'Orientación a Resultados', id: 'or', texto: 'Cuando un proyecto se retrasa, me enfoco inmediatamente en identificar acciones correctivas para cumplir el objetivo, incluso si requiere un esfuerzo adicional.' },
-      { categoria: 'Atención al Detalle', id: 'ad', texto: 'Revisar meticulosamente mi trabajo en busca de errores menores es una parte esencial y gratificante de mi proceso.' },
-      { categoria: 'Autodesarrollo', id: 'au', texto: 'Busco activamente capacitaciones, manuales o expertos para aprender una nueva tecnología esencial para mi rol, incluso si no tengo tiempo dedicado por la empresa.' },
-      { categoria: 'Colaboración', id: 'co', texto: 'En un conflicto de equipo, mi principal prioridad es preservar la armonía y encontrar un punto medio que satisfaga a todos.' },
-      { categoria: 'Liderazgo Informal', id: 'li', texto: 'En reuniones donde el líder está ausente o pasivo, tomo la iniciativa para establecer la agenda, motivar la participación y asegurar la toma de decisiones.' },
+      { categoria: 'Orientación a Resultados', id: 'or', texto: 'Cuando un proyecto se retrasa, me enfoco inmediatamente en acciones correctivas para cumplir el objetivo.' },
+      { categoria: 'Atención al Detalle',     id: 'ad', texto: 'Revisar meticulosamente mi trabajo en busca de errores menores es esencial en mi proceso.' },
+      { categoria: 'Autodesarrollo',           id: 'au', texto: 'Busco activamente cómo aprender una nueva tecnología esencial, aunque no tenga tiempo asignado.' },
+      { categoria: 'Colaboración',             id: 'co', texto: 'En conflictos de equipo, priorizo la armonía y un punto medio que satisfaga a todos.' },
+      { categoria: 'Liderazgo Informal',       id: 'li', texto: 'Si el líder está ausente o pasivo, tomo iniciativa para agenda, participación y decisiones.' }
     ];
 
-    // SJT (best/least) con clave correcta
-    // mode: 'BEST' => seleccionar la mejor; 'LEAST' => seleccionar la menos efectiva
     const SJT_ITEMS = [
       {
         categoria: 'Flexibilidad y Adaptación', id: 'fa', mode: 'BEST',
-        stem: 'Escenario: Un requisito clave en tu proyecto se anula a mitad del sprint. Los cambios impactan un 50% de tu trabajo. ¿Qué acción tomarías primero?',
+        stem: 'Un requisito clave se anula a mitad del sprint (impacta 50% del trabajo). ¿Qué haces primero?',
         opciones: {
-          a: 'Detienes el trabajo para analizar el impacto y proponer un plan de ajuste.',
-          b: 'Continúas con las tareas restantes que no se vieron afectadas.',
-          c: 'Expresas frustración al equipo y pides al gestor que resuelva el cambio.'
+          a: 'Detener y analizar impacto, proponiendo un plan de ajuste.',
+          b: 'Seguir con lo que no se afectó.',
+          c: 'Expresar frustración y pedir al gestor que resuelva.'
         },
         correct: 'a'
       },
       {
         categoria: 'Gestión del Estrés', id: 'ge', mode: 'LEAST',
-        stem: 'Escenario: Descubres un error crítico en el código horas antes del lanzamiento. ¿Cuál de las siguientes acciones es la MENOS efectiva para la situación?',
+        stem: 'Descubres un error crítico horas antes del release. ¿Cuál es la MENOS efectiva?',
         opciones: {
-          a: 'Mantener la calma y evaluar la causa y el impacto exacto del error.',
-          b: 'Comunicar la situación de pánico a todo el equipo y a los stakeholders.',
-          c: 'Priorizar una solución rápida sobre una corrección perfecta.'
+          a: 'Mantener la calma y evaluar causa/impacto.',
+          b: 'Comunicar en pánico a todo el equipo y stakeholders.',
+          c: 'Priorizar solución rápida sobre perfección.'
         },
         correct: 'b'
       },
       {
         categoria: 'Innovación', id: 'in', mode: 'BEST',
-        stem: 'Escenario: Tu equipo utiliza un proceso tedioso que consume 5 horas semanales. Tienes una idea para automatizarlo. ¿Qué harías primero?',
+        stem: 'Proceso tedioso consume 5h/semana; tienes idea para automatizar. ¿Qué haces primero?',
         opciones: {
-          a: 'Inviertes tiempo personal en un prototipo funcional antes de proponerlo.',
-          b: 'Presentas la idea de inmediato, pidiendo recursos y tiempo del proyecto actual.',
-          c: 'Esperas a que el gestor te pida buscar una solución de mejora.'
+          a: 'Construir un prototipo funcional con tiempo personal.',
+          b: 'Pedir de inmediato recursos del proyecto actual.',
+          c: 'Esperar a que te indiquen buscar mejora.'
         },
         correct: 'a'
       },
       {
         categoria: 'Comunicación Efectiva', id: 'ce', mode: 'BEST',
-        stem: 'Escenario: Debes explicar el funcionamiento interno de un sistema complejo a un cliente no técnico en 10 minutos. ¿Cuál sería tu enfoque principal?',
+        stem: 'Debes explicar un sistema complejo a un cliente no técnico en 10 minutos. ¿Enfoque principal?',
         opciones: {
-          a: 'Usar analogías sencillas y enfocar la explicación en los beneficios para el cliente.',
-          b: 'Usar el vocabulario técnico preciso para garantizar la exactitud.',
-          c: 'Entregar un documento técnico detallado como referencia.'
+          a: 'Analogías simples y beneficios para el cliente.',
+          b: 'Vocabulario técnico preciso para exactitud.',
+          c: 'Entregar un documento técnico detallado.'
         },
         correct: 'a'
-      },
+      }
     ];
 
-    // Lógica: opción múltiple con respuesta correcta
     const LOGIC_ITEMS = [
       {
         categoria: 'Pensamiento Crítico', id: 'pc',
-        stem: 'Selecciona el número que continúa la siguiente secuencia lógica: 3, 5, 9, 15, 23, ___ (Patrón: +2, +4, +6, +8, +10)',
+        stem: 'Secuencia: 3, 5, 9, 15, 23, __ (patrón +2,+4,+6,+8,+10)',
         opciones: ['31','32','33','34'],
         correct: '33'
       }
@@ -205,10 +197,10 @@
 
     // ======= Render UI =======
     const likertContainer = document.getElementById('likert-container');
-    const sjtContainer = document.getElementById('sjt-container');
-    const logicContainer = document.getElementById('logic-container');
+    const sjtContainer    = document.getElementById('sjt-container');
+    const logicContainer  = document.getElementById('logic-container');
 
-    const renderLikert = () => {
+    function renderLikert(){
       LIKERT_ITEMS.forEach((q, idx) => {
         const el = document.createElement('div');
         el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
@@ -218,57 +210,52 @@
           <div class="flex items-center justify-between text-sm">
             <span>1</span>
             <div class="flex gap-4">
-              ${[1,2,3,4,5].map(v => `
-                <label class="cursor-pointer"><input type="radio" name="likert_${q.id}" value="${v}" required class="h-4 w-4"> ${v}</label>
-              `).join('')}
+              ${[1,2,3,4,5].map(v =>
+                `<label class="cursor-pointer"><input type="radio" name="likert_${q.id}" value="${v}" required class="h-4 w-4"> ${v}</label>`
+              ).join('')}
             </div>
             <span>5</span>
-          </div>
-        `;
+          </div>`;
         likertContainer.appendChild(el);
       });
-    };
+    }
 
-    const renderSJT = () => {
+    function renderSJT(){
       SJT_ITEMS.forEach((q, idx) => {
         const el = document.createElement('div');
         el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
-        const opts = Object.entries(q.opciones).map(([key, txt]) => `
-          <label class="block mb-2 cursor-pointer">
-            <input type="radio" name="sjt_${q.id}" value="${key}" required class="mr-2"> (${key}) ${txt}
-          </label>
-        `).join('');
+        const opts = Object.entries(q.opciones).map(([k, t]) =>
+          `<label class="block mb-2 cursor-pointer">
+            <input type="radio" name="sjt_${q.id}" value="${k}" required class="mr-2"> (${k}) ${t}
+          </label>`
+        ).join('');
         const modeText = q.mode === 'BEST' ? 'Elige la MEJOR opción.' : 'Elige la MENOS efectiva.';
         el.innerHTML = `
           <p class="font-medium mb-2 text-dt-primary">${idx+1}. ${q.stem}</p>
           <p class="text-xs text-gray-500 mb-3">Categoría: ${q.categoria} · ${modeText}</p>
-          <div>${opts}</div>
-        `;
+          <div>${opts}</div>`;
         sjtContainer.appendChild(el);
       });
-    };
+    }
 
-    const renderLogic = () => {
+    function renderLogic(){
       LOGIC_ITEMS.forEach((q, idx) => {
         const el = document.createElement('div');
         el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
-        const opts = q.opciones.map((opt,i)=>`
-          <label class="block mb-2 cursor-pointer">
+        const opts = q.opciones.map(opt =>
+          `<label class="block mb-2 cursor-pointer">
             <input type="radio" name="logic_${q.id}" value="${opt}" required class="mr-2"> ${opt}
-          </label>
-        `).join('');
+          </label>`
+        ).join('');
         el.innerHTML = `
           <p class="font-medium mb-2 text-dt-primary">${idx+1}. ${q.stem}</p>
           <p class="text-xs text-gray-500 mb-3">Categoría: ${q.categoria}</p>
-          <div>${opts}</div>
-        `;
+          <div>${opts}</div>`;
         logicContainer.appendChild(el);
       });
-    };
+    }
 
-    renderLikert();
-    renderSJT();
-    renderLogic();
+    renderLikert(); renderSJT(); renderLogic();
 
     // ======= Navegación =======
     const sections = [...document.querySelectorAll('.test-section')];
@@ -277,7 +264,7 @@
     const nextBtn = document.getElementById('next-btn');
     const submitBtn = document.getElementById('submit-btn');
 
-    function showSection(i) {
+    function showSection(i){
       sections.forEach((s, idx) => s.classList.toggle('active', idx === i));
       prevBtn.classList.toggle('hidden', i === 0);
       nextBtn.classList.toggle('hidden', i >= sections.length - 1);
@@ -288,34 +275,27 @@
     nextBtn.addEventListener('click', () => { if (validateSection(current)) { current++; showSection(current); } });
     submitBtn.addEventListener('click', onSubmit);
 
-    function validateSection(i) {
+    function validateSection(i){
       const sec = sections[i];
-      const required = sec.querySelectorAll('input[required], select[required], textarea[required]');
+      const required = sec.querySelectorAll('input[required]');
       for (const input of required) {
         const name = input.name;
         if (input.type === 'radio') {
           const group = sec.querySelectorAll(`input[name="${name}"]`);
-          const checked = [...group].some(r => r.checked);
-          if (!checked) { alert('Por favor, completa las preguntas requeridas.'); return false; }
-        } else if (!input.value) {
-          alert('Por favor, completa las preguntas requeridas.');
-          return false;
-        }
+          if (![...group].some(r => r.checked)) { alert('Completa las preguntas requeridas.'); return false; }
+        } else if (!input.value) { alert('Completa las preguntas requeridas.'); return false; }
       }
       return true;
     }
 
     // ======= Scoring =======
-    // Likert: 1..5 directo a categoría
-    // SJT BEST/LEAST: +5 si acierta la clave, +0 si no
-    // Lógica: +5 si acierta
-    function computeScores(formData) {
-      const categorias = new Set([
-        ...LIKERT_ITEMS.map(i=>i.categoria),
-        ...SJT_ITEMS.map(i=>i.categoria),
-        ...LOGIC_ITEMS.map(i=>i.categoria),
+    function computeScores(formData){
+      const categories = new Set([
+        ...LIKERT_ITEMS.map(i => i.categoria),
+        ...SJT_ITEMS.map(i => i.categoria),
+        ...LOGIC_ITEMS.map(i => i.categoria),
       ]);
-      const scores = {}; categorias.forEach(c => scores[c] = 0);
+      const scores = {}; categories.forEach(c => scores[c] = 0);
 
       LIKERT_ITEMS.forEach(q => {
         const v = Number(formData.get(`likert_${q.id}`) || 0);
@@ -332,19 +312,30 @@
         if (v && v === q.correct) scores[q.categoria] += 5;
       });
 
-      const total = Object.values(scores).reduce((a,b)=>a+b,0);
+      const total = Object.values(scores).reduce((a,b) => a + b, 0);
       return { scores, total };
     }
 
-    function topCompetencias(scores, k=3) {
-      return Object.entries(scores)
-        .sort((a,b)=>b[1]-a[1])
-        .slice(0,k);
+    function topCompetencias(scores, k=3){
+      return Object.entries(scores).sort((a,b) => b[1]-a[1]).slice(0,k);
     }
 
-    // ======= Submit & Sheets =======
-    async function onSubmit() {
+    function renderResults(scores, total){
+      const list = document.getElementById('top-competencias');
+      list.innerHTML = '';
+      topCompetencias(scores).forEach(([cat, val]) => {
+        const li = document.createElement('li');
+        li.textContent = `${cat}: ${val}`;
+        list.appendChild(li);
+      });
+      document.getElementById('puntaje-total').textContent = total;
+      document.getElementById('results-container').classList.remove('hidden');
+    }
+
+    // ======= Submit & Sheets (sin preflight CORS) =======
+    async function onSubmit(){
       if (!validateSection(current)) return;
+
       const form = document.getElementById('psychometric-test-form');
       const formData = new FormData(form);
       const { scores, total } = computeScores(formData);
@@ -365,26 +356,26 @@
         respuestas: Object.fromEntries([...formData.entries()]),
       };
 
-      // Mostrar resultados locales (aunque falle el envío)
+      // Mostrar resultados locales de todos modos
       renderResults(scores, total);
 
       try {
         if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_YOUR')) throw new Error('Falta configurar SCRIPT_URL');
-        const body = new URLSearchParams();
-        body.append('payload', JSON.stringify(payload));
 
-        const res = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body // Evita preflight CORS; no agregues headers manuales
-        });
+        const body = new URLSearchParams();
+        body.append('action', 'saveResults');            // ruteo server
+        body.append('payload', JSON.stringify(payload)); // sin headers => sin preflight
+
+        const res = await fetch(SCRIPT_URL, { method: 'POST', body });
 
         let ok = false;
         try {
           const data = await res.json();
-          ok = !!data.ok;
-        } catch (_) { /* puede no venir JSON válido; ignorar */ }
+          ok = data && (data.ok === true || data.status === 'success');
+        } catch(_) {}
 
         if (!res.ok || !ok) throw new Error('Respuesta no OK');
+
         document.getElementById('loading-indicator').classList.add('hidden');
         document.getElementById('results-container').classList.remove('hidden');
         current = sections.length - 1; showSection(current);
@@ -394,18 +385,6 @@
         current = sections.length - 1; showSection(current);
         console.error(e);
       }
-    }
-
-    function renderResults(scores, total) {
-      const list = document.getElementById('top-competencias');
-      list.innerHTML = '';
-      topCompetencias(scores).forEach(([cat, val]) => {
-        const li = document.createElement('li');
-        li.textContent = `${cat}: ${val}`;
-        list.appendChild(li);
-      });
-      document.getElementById('puntaje-total').textContent = total;
-      document.getElementById('results-container').classList.remove('hidden');
     }
 
     // init
