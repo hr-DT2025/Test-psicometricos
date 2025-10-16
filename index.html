@@ -32,7 +32,7 @@
         <img src="icon_dark.png" alt="Disruptive Talent" class="h-8 mr-3" />
         <h1 class="text-3xl font-extrabold text-dt-primary">Talent Assessment</h1>
       </div>
-      <p class="text-gray-500 text-lg">Evaluación de Competencias para la Transformación Digital</p>
+      <p class="text-gray-500 text-lg">Evaluación de Competencias</p>
       <div class="h-1 w-20 bg-dt-accent mx-auto mt-4 rounded-full"></div>
     </header>
 
@@ -42,19 +42,19 @@
         <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">1/4. Información Personal</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-dt-primary">Nombre completo</label>
+            <label class="block text-sm font-medium text-dt-primary" placeholder="Juan Pérez">Nombre completo</label>
             <input name="nombre" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
           <div>
-            <label class="block text-sm font-medium text-dt-primary">Correo</label>
+            <label class="block text-sm font-medium text-dt-primary" placeholder="tucorreo@correo.com">Correo</label>
             <input type="email" name="correo" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
           <div>
-            <label class="block text-sm font-medium text-dt-primary">Teléfono</label>
+            <label class="block text-sm font-medium text-dt-primary" placeholder="+58 412 1234567">Teléfono</label>
             <input name="telefono" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
           <div>
-            <label class="block text-sm font-medium text-dt-primary">Vacante / Área</label>
+            <label class="block text-sm font-medium text-dt-primary" placeholder="Desarrollador Backend">Vacante a la que postulas</label>
             <input name="vacante" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"/>
           </div>
         </div>
@@ -132,7 +132,7 @@
 
   <script>
     // ======= CONFIG =======
-    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // <-- /exec
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUxQtT2rw8a3F117UM24SqTQm9GgGueueV_dz32CwcmOCcKSeNexnyg38L6gRhN8BZ/exec"; // <-- /exec
 
     // ======= Ítems =======
     const LIKERT_ITEMS = [
@@ -189,7 +189,7 @@
     const LOGIC_ITEMS = [
       {
         categoria: 'Pensamiento Crítico', id: 'pc',
-        stem: 'Secuencia: 3, 5, 9, 15, 23, __ (patrón +2,+4,+6,+8,+10)',
+        stem: 'Secuencia: 3, 5, 9, 15, 23, __',
         opciones: ['31','32','33','34'],
         correct: '33'
       }
