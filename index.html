@@ -5,17 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Evaluación de Competencias | Disruptive Talent</title>
 
-  <!-- Tailwind (puedes migrar a build/CLI cuando quieras; esto no afecta al CORS) -->
+  <!-- Tailwind CDN (puedes migrar a build/CLI cuando quieras) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: { 'dt-primary': '#0F3460', 'dt-accent': '#3B82F6', 'dt-secondary': '#E5E7EB' },
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-        },
-      },
-    };
+    tailwind.config = { theme: { extend: { colors: { 'dt-primary': '#0F3460', 'dt-accent': '#3B82F6', 'dt-secondary': '#E5E7EB' }, fontFamily: { sans: ['Inter','sans-serif'] } } } };
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -32,26 +25,26 @@
         <img src="icon_dark.png" alt="Disruptive Talent" class="h-8 mr-3" />
         <h1 class="text-3xl font-extrabold text-dt-primary">Talent Assessment</h1>
       </div>
-      <p class="text-gray-500 text-lg">Evaluación de Competencias</p>
+      <p class="text-gray-500 text-lg">Evaluación de Competencias para Perfiles Técnicos</p>
       <div class="h-1 w-20 bg-dt-accent mx-auto mt-4 rounded-full"></div>
     </header>
 
     <form id="psychometric-test-form" class="space-y-10">
       <!-- 1. Datos personales -->
       <section id="section-1" class="test-section active">
-        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">1/4. Información Personal</h2>
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">1/5. Información Personal</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-dt-primary">Nombre completo</label>
-            <input name="nombre" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" placeholder="Juan Pérez" />
+            <input name="nombre" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" placeholder="Juan Pérez"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-dt-primary">Correo</label>
-            <input type="email" name="correo" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent"  placeholder="tucorreo@correo.com" />
+            <input type="email" name="correo" required class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" placeholder="tucorreo@correo.com"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-dt-primary">Teléfono</label>
-            <input name="telefono" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" placeholder="+58 412 1234567" />
+            <input name="telefono" class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-dt-accent" placeholder="+58 412 1234567"/>
           </div>
           <div>
             <label class="block text-sm font-medium text-dt-primary">Vacante a la que postulas</label>
@@ -62,27 +55,22 @@
 
       <!-- 2. Likert uniforme -->
       <section id="section-2" class="test-section">
-        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">2/4. Afirmaciones (Likert 1–5)</h2>
-        <div class="mb-4 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm text-gray-700">
-          Responde de <b>1</b> (Totalmente en desacuerdo) a <b>5</b> (Totalmente de acuerdo).
-        </div>
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">2/5. Afirmaciones (Likert 1–5)</h2>
         <div id="likert-container" class="space-y-6"></div>
       </section>
 
       <!-- 3. SJT -->
       <section id="section-3" class="test-section">
-        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">3/4. Juicio Situacional (SJT)</h2>
-        <div class="mb-4 bg-blue-50 p-3 rounded-lg border-l-4 border-dt-accent text-sm text-gray-700">
-          Lee cada escenario y elige la opción indicada (<b>MEJOR</b> o <b>MENOS</b> efectiva).
-        </div>
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">3/5. Juicio Situacional (SJT)</h2>
         <div id="sjt-container" class="space-y-6"></div>
       </section>
 
-      <!-- 4. Lógica + Resultados -->
+      <!-- 4. Lógica -->
       <section id="section-4" class="test-section">
-        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">4/4. Pensamiento Lógico y Resultados</h2>
+        <h2 class="text-xl font-semibold mb-6 text-dt-primary border-b border-dt-secondary pb-2">4/5. Pensamiento Lógico</h2>
         <div id="logic-container" class="space-y-6 mb-8"></div>
 
+        <!-- Loading / Error solo aquí -->
         <div id="loading-indicator" class="hidden">
           <div class="flex items-center justify-center p-6">
             <svg class="animate-spin h-8 w-8 text-dt-primary mr-3" viewBox="0 0 24 24">
@@ -94,9 +82,16 @@
           <p class="text-sm text-gray-500 text-center">Esto puede tomar unos segundos.</p>
         </div>
 
-        <div id="results-container" class="mt-4 p-6 bg-dt-primary text-white rounded-lg hidden">
-          <h3 class="text-2xl font-bold mb-4">¡Gracias por completar la Evaluación!</h3>
-          <p class="mb-6">Tu perfil ha sido procesado por Disruptive Talent.</p>
+        <div id="error-message" class="mt-4 p-4 bg-red-100 text-red-700 border-l-4 border-red-500 rounded-lg hidden text-left">
+          Hubo un error al intentar guardar los datos. Por favor, revisa la configuración del Apps Script.
+        </div>
+      </section>
+
+      <!-- 5. Resultados y agradecimiento (pantalla final) -->
+      <section id="section-5" class="test-section">
+        <div id="results-container" class="mt-2 p-6 bg-dt-primary text-white rounded-lg">
+          <h3 class="text-2xl font-bold mb-2">¡Gracias! El test ha finalizado con éxito.</h3>
+          <p id=\"mensaje-final\" class=\"mb-6\">Agradecemos tu tiempo. En breve recibirás un reporte más detallado.</p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
             <div class="bg-white p-4 rounded-lg text-dt-primary shadow-md">
@@ -110,15 +105,6 @@
               <p class="text-sm mt-2">Suma ponderada por categorías.</p>
             </div>
           </div>
-
-          <div class="mt-6 bg-white text-dt-primary p-4 rounded-lg shadow">
-            <h5 class="font-bold">Mensaje</h5>
-            <p id="mensaje-final" class="text-sm mt-1">Agradecemos tu tiempo. En breve recibirás un reporte más detallado.</p>
-          </div>
-        </div>
-
-        <div id="error-message" class="mt-4 p-4 bg-red-100 text-red-700 border-l-4 border-red-500 rounded-lg hidden text-left">
-          Hubo un error al intentar guardar los datos. Por favor, revisa la configuración del Apps Script.
         </div>
       </section>
 
@@ -131,8 +117,7 @@
   </main>
 
   <script>
-    // ======= CONFIG =======
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUxQtT2rw8a3F117UM24SqTQm9GgGueueV_dz32CwcmOCcKSeNexnyg38L6gRhN8BZ/exec"; // <-- /exec
+    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // /exec
 
     // ======= Ítems =======
     const LIKERT_ITEMS = [
@@ -147,52 +132,31 @@
       {
         categoria: 'Flexibilidad y Adaptación', id: 'fa', mode: 'BEST',
         stem: 'Un requisito clave se anula a mitad del sprint (impacta 50% del trabajo). ¿Qué haces primero?',
-        opciones: {
-          a: 'Detener y analizar impacto, proponiendo un plan de ajuste.',
-          b: 'Seguir con lo que no se afectó.',
-          c: 'Expresar frustración y pedir al gestor que resuelva.'
-        },
+        opciones: { a: 'Detener y analizar impacto, proponiendo un plan de ajuste.', b: 'Seguir con lo que no se afectó.', c: 'Expresar frustración y pedir al gestor que resuelva.' },
         correct: 'a'
       },
       {
         categoria: 'Gestión del Estrés', id: 'ge', mode: 'LEAST',
         stem: 'Descubres un error crítico horas antes del release. ¿Cuál es la MENOS efectiva?',
-        opciones: {
-          a: 'Mantener la calma y evaluar causa/impacto.',
-          b: 'Comunicar en pánico a todo el equipo y stakeholders.',
-          c: 'Priorizar solución rápida sobre perfección.'
-        },
+        opciones: { a: 'Mantener la calma y evaluar causa/impacto.', b: 'Comunicar en pánico a todo el equipo y stakeholders.', c: 'Priorizar solución rápida sobre perfección.' },
         correct: 'b'
       },
       {
         categoria: 'Innovación', id: 'in', mode: 'BEST',
         stem: 'Proceso tedioso consume 5h/semana; tienes idea para automatizar. ¿Qué haces primero?',
-        opciones: {
-          a: 'Construir un prototipo funcional con tiempo personal.',
-          b: 'Pedir de inmediato recursos del proyecto actual.',
-          c: 'Esperar a que te indiquen buscar mejora.'
-        },
+        opciones: { a: 'Construir un prototipo funcional con tiempo personal.', b: 'Pedir de inmediato recursos del proyecto actual.', c: 'Esperar a que te indiquen buscar mejora.' },
         correct: 'a'
       },
       {
         categoria: 'Comunicación Efectiva', id: 'ce', mode: 'BEST',
         stem: 'Debes explicar un sistema complejo a un cliente no técnico en 10 minutos. ¿Enfoque principal?',
-        opciones: {
-          a: 'Analogías simples y beneficios para el cliente.',
-          b: 'Vocabulario técnico preciso para exactitud.',
-          c: 'Entregar un documento técnico detallado.'
-        },
+        opciones: { a: 'Analogías simples y beneficios para el cliente.', b: 'Vocabulario técnico preciso para exactitud.', c: 'Entregar un documento técnico detallado.' },
         correct: 'a'
       }
     ];
 
     const LOGIC_ITEMS = [
-      {
-        categoria: 'Pensamiento Crítico', id: 'pc',
-        stem: 'Secuencia: 3, 5, 9, 15, 23, __',
-        opciones: ['31','32','33','34'],
-        correct: '33'
-      }
+      { categoria: 'Pensamiento Crítico', id: 'pc', stem: 'Secuencia: 3, 5, 9, 15, 23, __ (patrón +2,+4,+6,+8,+10)', opciones: ['31','32','33','34'], correct: '33' }
     ];
 
     // ======= Render UI =======
@@ -202,17 +166,14 @@
 
     function renderLikert(){
       LIKERT_ITEMS.forEach((q, idx) => {
-        const el = document.createElement('div');
-        el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
+        const el = document.createElement('div'); el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
         el.innerHTML = `
           <p class="font-medium mb-2 text-dt-primary">${idx+1}. ${q.texto}</p>
           <p class="text-xs text-gray-500 mb-3">Categoría: ${q.categoria}</p>
           <div class="flex items-center justify-between text-sm">
             <span>1</span>
             <div class="flex gap-4">
-              ${[1,2,3,4,5].map(v =>
-                `<label class="cursor-pointer"><input type="radio" name="likert_${q.id}" value="${v}" required class="h-4 w-4"> ${v}</label>`
-              ).join('')}
+              ${[1,2,3,4,5].map(v => `<label class=\"cursor-pointer\"><input type=\"radio\" name=\"likert_${q.id}\" value=\"${v}\" required class=\"h-4 w-4\"> ${v}</label>`).join('')}
             </div>
             <span>5</span>
           </div>`;
@@ -222,17 +183,15 @@
 
     function renderSJT(){
       SJT_ITEMS.forEach((q, idx) => {
-        const el = document.createElement('div');
-        el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
-        const opts = Object.entries(q.opciones).map(([k, t]) =>
-          `<label class="block mb-2 cursor-pointer">
-            <input type="radio" name="sjt_${q.id}" value="${k}" required class="mr-2"> (${k}) ${t}
-          </label>`
-        ).join('');
+        const el = document.createElement('div'); el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
+        const opts = Object.entries(q.opciones).map(([k,t]) => `
+          <label class=\"block mb-2 cursor-pointer\">
+            <input type=\"radio\" name=\"sjt_${q.id}\" value=\"${k}\" required class=\"mr-2\"> (${k}) ${t}
+          </label>`).join('');
         const modeText = q.mode === 'BEST' ? 'Elige la MEJOR opción.' : 'Elige la MENOS efectiva.';
         el.innerHTML = `
-          <p class="font-medium mb-2 text-dt-primary">${idx+1}. ${q.stem}</p>
-          <p class="text-xs text-gray-500 mb-3">Categoría: ${q.categoria} · ${modeText}</p>
+          <p class=\"font-medium mb-2 text-dt-primary\">${idx+1}. ${q.stem}</p>
+          <p class=\"text-xs text-gray-500 mb-3\">Categoría: ${q.categoria} · ${modeText}</p>
           <div>${opts}</div>`;
         sjtContainer.appendChild(el);
       });
@@ -240,16 +199,14 @@
 
     function renderLogic(){
       LOGIC_ITEMS.forEach((q, idx) => {
-        const el = document.createElement('div');
-        el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
-        const opts = q.opciones.map(opt =>
-          `<label class="block mb-2 cursor-pointer">
-            <input type="radio" name="logic_${q.id}" value="${opt}" required class="mr-2"> ${opt}
-          </label>`
-        ).join('');
+        const el = document.createElement('div'); el.className = 'p-4 border border-dt-secondary rounded-lg shadow-sm';
+        const opts = q.opciones.map(opt => `
+          <label class=\"block mb-2 cursor-pointer\">
+            <input type=\"radio\" name=\"logic_${q.id}\" value=\"${opt}\" required class=\"mr-2\"> ${opt}
+          </label>`).join('');
         el.innerHTML = `
-          <p class="font-medium mb-2 text-dt-primary">${idx+1}. ${q.stem}</p>
-          <p class="text-xs text-gray-500 mb-3">Categoría: ${q.categoria}</p>
+          <p class=\"font-medium mb-2 text-dt-primary\">${idx+1}. ${q.stem}</p>
+          <p class=\"text-xs text-gray-500 mb-3\">Categoría: ${q.categoria}</p>
           <div>${opts}</div>`;
         logicContainer.appendChild(el);
       });
@@ -258,17 +215,26 @@
     renderLikert(); renderSJT(); renderLogic();
 
     // ======= Navegación =======
-    const sections = [...document.querySelectorAll('.test-section')];
+    const sections  = [...document.querySelectorAll('.test-section')];
     let current = 0;
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+    const prevBtn   = document.getElementById('prev-btn');
+    const nextBtn   = document.getElementById('next-btn');
     const submitBtn = document.getElementById('submit-btn');
 
     function showSection(i){
       sections.forEach((s, idx) => s.classList.toggle('active', idx === i));
+      // Penúltima sección (4/5) muestra "Finalizar"; oculta "Siguiente"
       prevBtn.classList.toggle('hidden', i === 0);
-      nextBtn.classList.toggle('hidden', i >= sections.length - 1);
-      submitBtn.classList.toggle('hidden', i < sections.length - 1);
+      nextBtn.classList.toggle('hidden', i >= sections.length - 2);
+      submitBtn.classList.toggle('hidden', i < sections.length - 2);
+
+      // 👇 Nuevo: ocultar navegación en la pantalla final (sección 5)
+      const nav = document.getElementById('navigation-controls');
+      if (i === sections.length - 1) {
+        nav.classList.add('hidden');
+      } else {
+        nav.classList.remove('hidden');
+      }      
     }
 
     prevBtn.addEventListener('click', () => { if (current > 0) { current--; showSection(current); } });
@@ -291,58 +257,56 @@
     // ======= Scoring =======
     function computeScores(formData){
       const categories = new Set([
-        ...LIKERT_ITEMS.map(i => i.categoria),
-        ...SJT_ITEMS.map(i => i.categoria),
-        ...LOGIC_ITEMS.map(i => i.categoria),
+        ...LIKERT_ITEMS.map(i=>i.categoria),
+        ...SJT_ITEMS.map(i=>i.categoria),
+        ...LOGIC_ITEMS.map(i=>i.categoria),
       ]);
       const scores = {}; categories.forEach(c => scores[c] = 0);
 
-      LIKERT_ITEMS.forEach(q => {
-        const v = Number(formData.get(`likert_${q.id}`) || 0);
-        scores[q.categoria] += v;
-      });
+      LIKERT_ITEMS.forEach(q => { const v = Number(formData.get(`likert_${q.id}`) || 0); scores[q.categoria] += v; });
+      SJT_ITEMS.forEach(q => { const v = formData.get(`sjt_${q.id}`); if (v && v === q.correct) scores[q.categoria] += 5; });
+      LOGIC_ITEMS.forEach(q => { const v = formData.get(`logic_${q.id}`); if (v && v === q.correct) scores[q.categoria] += 5; });
 
-      SJT_ITEMS.forEach(q => {
-        const v = formData.get(`sjt_${q.id}`);
-        if (v && v === q.correct) scores[q.categoria] += 5;
-      });
-
-      LOGIC_ITEMS.forEach(q => {
-        const v = formData.get(`logic_${q.id}`);
-        if (v && v === q.correct) scores[q.categoria] += 5;
-      });
-
-      const total = Object.values(scores).reduce((a,b) => a + b, 0);
+      const total = Object.values(scores).reduce((a,b)=>a+b,0);
       return { scores, total };
     }
 
     function topCompetencias(scores, k=3){
-      return Object.entries(scores).sort((a,b) => b[1]-a[1]).slice(0,k);
+      return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,k);
     }
 
     function renderResults(scores, total){
       const list = document.getElementById('top-competencias');
       list.innerHTML = '';
-      topCompetencias(scores).forEach(([cat, val]) => {
-        const li = document.createElement('li');
-        li.textContent = `${cat}: ${val}`;
-        list.appendChild(li);
+      const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+      const top3 = sorted.slice(0,3);
+      top3.forEach(([cat, val]) => {
+        const li = document.createElement('li'); li.textContent = `${cat}: ${val}`; list.appendChild(li);
       });
       document.getElementById('puntaje-total').textContent = total;
-      document.getElementById('results-container').classList.remove('hidden');
+
+      // Mensaje final dinámico
+      const mensajeEl = document.getElementById('mensaje-final');
+      if (mensajeEl) {
+        const [top1, top2] = [sorted[0]?.[0], sorted[1]?.[0]];
+        const bottom1 = sorted[sorted.length-1]?.[0];
+        const partes = [];
+        if (top1) partes.push(`Tu fortaleza principal es **${top1}**.`);
+        if (top2) partes.push(`También destacas en **${top2}**.`);
+        if (bottom1) partes.push(`Oportunidad de mejora: **${bottom1}**.`);
+        mensajeEl.innerHTML = `${partes.join(' ')} Gracias por tu tiempo.`;
+      }
     }
 
     // ======= Submit & Sheets (sin preflight CORS) =======
     async function onSubmit(){
       if (!validateSection(current)) return;
-
       const form = document.getElementById('psychometric-test-form');
       const formData = new FormData(form);
       const { scores, total } = computeScores(formData);
 
-      // UI feedback
+      // UI feedback (en sección 4)
       document.getElementById('loading-indicator').classList.remove('hidden');
-      document.getElementById('results-container').classList.add('hidden');
       document.getElementById('error-message').classList.add('hidden');
 
       const payload = {
@@ -356,34 +320,24 @@
         respuestas: Object.fromEntries([...formData.entries()]),
       };
 
-      // Mostrar resultados locales de todos modos
+      // Renderiza resultados (sección 5) y navega a final pase lo que pase
       renderResults(scores, total);
 
       try {
         if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_YOUR')) throw new Error('Falta configurar SCRIPT_URL');
-
         const body = new URLSearchParams();
-        body.append('action', 'saveResults');            // ruteo server
-        body.append('payload', JSON.stringify(payload)); // sin headers => sin preflight
-
+        body.append('action','saveResults');
+        body.append('payload', JSON.stringify(payload));
         const res = await fetch(SCRIPT_URL, { method: 'POST', body });
-
-        let ok = false;
-        try {
-          const data = await res.json();
-          ok = data && (data.ok === true || data.status === 'success');
-        } catch(_) {}
-
+        let ok = false; try { const data = await res.json(); ok = data && (data.ok === true || data.status === 'success'); } catch(_){ }
         if (!res.ok || !ok) throw new Error('Respuesta no OK');
-
-        document.getElementById('loading-indicator').classList.add('hidden');
-        document.getElementById('results-container').classList.remove('hidden');
-        current = sections.length - 1; showSection(current);
       } catch (e) {
-        document.getElementById('loading-indicator').classList.add('hidden');
         document.getElementById('error-message').classList.remove('hidden');
-        current = sections.length - 1; showSection(current);
         console.error(e);
+      } finally {
+        document.getElementById('loading-indicator').classList.add('hidden');
+        current = sections.length - 1; // ir a sección 5 (final)
+        showSection(current);
       }
     }
 
